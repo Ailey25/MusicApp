@@ -3,36 +3,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <group android:checkableBehavior="single">
+    <group android:id="@+id/group1"
+        android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_camera"
+            android:id="@+id/nav_songs"
             android:icon="@drawable/ic_menu_camera"
-            android:title="Import" />
+            android:title="Songs" />
         <item
-            android:id="@+id/nav_gallery"
+            android:id="@+id/nav_artists"
             android:icon="@drawable/ic_menu_gallery"
-            android:title="Gallery" />
+            android:title="Artists" />
         <item
-            android:id="@+id/nav_slideshow"
+            android:id="@+id/nav_genre"
             android:icon="@drawable/ic_menu_slideshow"
-            android:title="Slideshow" />
+            android:title="Genre" />
         <item
-            android:id="@+id/nav_manage"
+            android:id="@+id/nav_playlists"
             android:icon="@drawable/ic_menu_manage"
-            android:title="Tools" />
+            android:title="Playlists" />
     </group>
 
-    <item android:title="Communicate">
-        <menu>
-            <item
-                android:id="@+id/nav_share"
-                android:icon="@drawable/ic_menu_share"
-                android:title="Share" />
-            <item
-                android:id="@+id/nav_send"
-                android:icon="@drawable/ic_menu_send"
-                android:title="Send" />
-        </menu>
-    </item>
+    <group android:id="@+id/group2"
+        android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_settings"
+            android:icon="@drawable/ic_menu_share"
+            android:title="Settings" />
+        <item
+            android:id="@+id/nav_equalizer"
+            android:icon="@drawable/ic_menu_send"
+            android:title="Equalizer" />
+    </group>
 
 </menu>

@@ -6,30 +6,30 @@ import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-
 import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
 
 import java.io.File;
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, ActivityCompat.OnRequestPermissionsResultCallback {
+        implements NavigationView.OnNavigationItemSelectedListener,
+        ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int SDCARD_PERMISSION_REQUEST_CODE = 1;
-    private static final String MEDIA_PATH = Environment.getExternalStorageDirectory().getPath() + File.separator + "Download" + File.separator;
+    private static final String MEDIA_PATH = Environment.getExternalStorageDirectory().getPath() +
+            File.separator + "Download" + File.separator;
     public ArrayList<String> songName = new ArrayList<>();
     private ViewPager mViewPager;
     private MediaPlayer mMediaPlayer;
@@ -74,7 +74,8 @@ public class MainActivity extends AppCompatActivity
         Boolean hasPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         if (!hasPermission) {
-            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, SDCARD_PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this, new String[]{
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, SDCARD_PERMISSION_REQUEST_CODE);
         }
     }
 

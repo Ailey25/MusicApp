@@ -10,7 +10,6 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
-import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,7 +19,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewParent;
 
 import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
 
@@ -34,7 +32,7 @@ public class MainActivity extends AppCompatActivity
     private static final String MEDIA_PATH = Environment.getExternalStorageDirectory().getPath() + File.separator + "Download" + File.separator;
     public ArrayList<String> songName = new ArrayList<>();
     private ViewPager mViewPager;
-    private MediaPlayer mp;
+    private MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,7 +62,7 @@ public class MainActivity extends AppCompatActivity
         // Initialize ViewPager
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
         // Initialize MediaPlayer
-        mp = new MediaPlayer();
+        mMediaPlayer = new MediaPlayer();
         // Get and store all .mp3
         songName = getMp3();
 
@@ -170,9 +168,9 @@ public class MainActivity extends AppCompatActivity
 
     public void songThumbnailClick(View view) {
         try {
-            mp.setDataSource(MEDIA_PATH + "test.mp3");
-            mp.prepare();
-            mp.start();
+            mMediaPlayer.setDataSource(MEDIA_PATH + "test.mp3");
+            mMediaPlayer.prepare();
+            mMediaPlayer.start();
         } catch (Exception e) {
             e.printStackTrace();
         }

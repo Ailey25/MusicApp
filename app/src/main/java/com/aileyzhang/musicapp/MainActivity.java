@@ -2,9 +2,7 @@ package com.aileyzhang.musicapp;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
-import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.Snackbar;
@@ -18,21 +16,17 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
+import android.view.View;
 
-import java.io.File;
-import java.util.ArrayList;
+import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int SDCARD_PERMISSION_REQUEST_CODE = 1;
-    private static final String MEDIA_PATH = Environment.getExternalStorageDirectory().getPath() +
-            File.separator + "Download" + File.separator;
-    public ArrayList<String> songName = new ArrayList<>();
+
     private ViewPager mViewPager;
-    private MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,10 +55,6 @@ public class MainActivity extends AppCompatActivity
 
         // Initialize ViewPager
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
-        // Initialize MediaPlayer
-        mMediaPlayer = new MediaPlayer();
-        // Get and store all .mp3
-        songName = getMp3();
 
         // Check for permission and request it if it's not there
         getStoragePermission();
@@ -149,31 +139,5 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    // Return all .mp3 in storage
-    private ArrayList<String> getMp3() {
-        ArrayList<String> songs = new ArrayList<>();
-        String mp3Pattern = ".mp3";
-        if (MEDIA_PATH != null) {
-            File home = new File(MEDIA_PATH);
-            File[] listFiles = home.listFiles();
-            if (listFiles != null && listFiles.length > 0) {
-                for (File file: listFiles) {
-                    if (file.getName().endsWith(mp3Pattern)) {
-                        songs.add(file.getName());
-                    }
-                }
-            }
-        }
-        return songs;
-    }
 
-    public void songThumbnailClick(View view) {
-        try {
-            mMediaPlayer.setDataSource(MEDIA_PATH + "test.mp3");
-            mMediaPlayer.prepare();
-            mMediaPlayer.start();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
 }

@@ -1,16 +1,22 @@
 package com.aileyzhang.musicapp;
 
+import android.graphics.Bitmap;
+
 /**
  * Created by Ailey on 2017-12-15.
  */
 
 public class Song {
-    private String tempID;
-    private String song;
-    private String artist;
+    public String mTitle;
+    public String mArtist;
+    public String mGenre;
+    public Bitmap mArtwork;
 
-    public Song (String tempID) {
-        this.tempID = tempID;
+    public Song (String title, String artist, String genre, Bitmap artwork) {
+        mTitle = title;
+        mArtist = artist;
+        mGenre = genre;
+        mArtwork = artwork;
     }
 
 }

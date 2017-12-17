@@ -9,7 +9,7 @@
         android:orientation="horizontal"
         android:padding="10dp">
 
-        <ImageView
+        <ImageView android:id="@+id/song_list_artwork"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:onClick="songThumbnailClick"
@@ -22,19 +22,17 @@
             android:gravity="left"
             android:paddingLeft="15dp">
 
-            <TextView
-                android:id="@+id/song_name"
+            <TextView android:id="@+id/song_list_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="7dp"
-                android:text="NAME"/>
+                android:text="UNKNOWN"/>
 
-            <TextView
-                android:id="@+id/artist_name"
+            <TextView android:id="@+id/song_list_artist"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingTop="7dp"
-                android:text="ARTIST"/>
+                android:text="UNKNOWN"/>
 
         </LinearLayout>
 

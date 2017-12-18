@@ -52,9 +52,12 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+        navigationView.setCheckedItem(R.id.nav_songs);
 
         // Initialize ViewPager
         mViewPager = (ViewPager) findViewById(R.id.viewpager);
+        mViewPager.setAdapter(new MainActivityContentAdapter(getSupportFragmentManager()));
+        mViewPager.setCurrentItem(0);
 
         // Check for permission and request it if it's not there
         getStoragePermission();
@@ -120,8 +123,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_songs) {
-            mViewPager.setAdapter(new MainActivityContentAdapter(getSupportFragmentManager()));
-            mViewPager.setCurrentItem(0);
+
         } else if (id == R.id.nav_artists) {
 
         } else if (id == R.id.nav_genre) {

@@ -3,7 +3,6 @@ package com.aileyzhang.musicapp.adapters;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -12,8 +11,8 @@ import android.widget.TextView;
 
 import com.aileyzhang.musicapp.R;
 import com.aileyzhang.musicapp.Song;
+import com.aileyzhang.musicapp.views.SongListItemView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -31,8 +30,7 @@ public class SongListAdapter extends ArrayAdapter<Song> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         View songListView = convertView;
         if (songListView == null) {
-            songListView = LayoutInflater.from(getContext()).inflate(R.layout.song_list_item,
-                    parent, false);
+            songListView = new SongListItemView(getContext());
         }
         Song curSong = getItem(position);
 

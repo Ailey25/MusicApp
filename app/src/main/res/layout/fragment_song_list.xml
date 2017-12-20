@@ -11,7 +11,7 @@
         android:layout_height="wrap_content"
         android:text="Songs"
         android:textSize="30sp"
-        android:padding="15dp"/>
+        android:padding="15dp" />
 
     <ListView android:id="@+id/songs_list_view"
         android:layout_width="match_parent"

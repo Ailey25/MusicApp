@@ -16,6 +16,8 @@ import com.aileyzhang.musicapp.fragments.SongListFragment;
 
 public class MainActivityContentAdapter extends FragmentPagerAdapter {
     private final int TOTAL_PAGES = 2;
+    public static final int SONGS_PAGE_POSITION = 0;
+    public static final int ALBUMS_PAGE_POSITION = 1;
 
     public MainActivityContentAdapter(FragmentManager fm) {
         super(fm);

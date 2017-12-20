@@ -5,18 +5,12 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
-import android.media.MediaPlayer;
 import android.net.Uri;
-import android.os.Environment;
 import android.provider.MediaStore;
 
 import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.InputStream;
-import java.net.URI;
 import java.util.ArrayList;
-
-import static android.graphics.BitmapFactory.decodeFile;
 
 /**
  * Created by Ailey on 2017-12-15.
@@ -24,7 +18,6 @@ import static android.graphics.BitmapFactory.decodeFile;
 
 public class SongData {
     private Context context;
-    private MediaPlayer mMediaPlayer = new MediaPlayer();
     public ArrayList<Song> mSongs = new ArrayList<>();
 
     public SongData(Context context) {
@@ -34,7 +27,7 @@ public class SongData {
 
     private void loadAllSongs() {
         Uri allSongUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String[] projection = new String[] {
+        String[] projection = new String[]{
                 MediaStore.Audio.AudioColumns.DATA,
                 MediaStore.Audio.AudioColumns.TITLE,
                 MediaStore.Audio.ArtistColumns.ARTIST,
@@ -48,7 +41,6 @@ public class SongData {
                 String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                 String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                 String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
-                String albumID = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM_ID));
 
                 MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
                 mediaMetadataRetriever.setDataSource(path);
@@ -64,19 +56,5 @@ public class SongData {
             }
             cursor.close();
         }
-
-
     }
-
-
-
-//    public void songThumbnailClick(View view) {
-//        try {
-//            mMediaPlayer.setDataSource(MEDIA_PATH + "test.mp3");
-//            mMediaPlayer.prepare();
-//            mMediaPlayer.start();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
 }

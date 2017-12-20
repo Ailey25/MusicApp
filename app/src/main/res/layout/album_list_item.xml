@@ -13,19 +13,19 @@
     <ImageView android:id="@+id/album_list_artwork"
         android:layout_width="100dp"
         android:layout_height="100dp"
-        android:src="#636363"/>
+        android:src="#636363" />
 
     <TextView android:id="@+id/album_list_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="7dp"
-        android:text="UNKNOWN"/>
+        android:text="UNKNOWN" />
 
     <TextView android:id="@+id/album_list_artist"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingTop="7dp"
-        android:text="UNKNOWN"/>
+        android:text="UNKNOWN" />
 
     </LinearLayout>
 </android.support.constraint.ConstraintLayout>

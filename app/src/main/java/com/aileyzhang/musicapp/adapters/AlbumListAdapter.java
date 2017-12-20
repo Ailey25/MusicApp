@@ -15,7 +15,7 @@ import java.util.List;
  * Created by Ailey on 2017-12-19.
  */
 
-public class AlbumListAdapter extends ArrayAdapter<Song>{
+public class AlbumListAdapter extends ArrayAdapter<Song> {
     public AlbumListAdapter(@NonNull Context context, int resource, @NonNull List<Song> objects) {
         super(context, resource, objects);
     }

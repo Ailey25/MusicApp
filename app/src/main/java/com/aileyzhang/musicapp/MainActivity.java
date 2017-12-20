@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int SDCARD_PERMISSION_REQUEST_CODE = 1;
+    private static final int SONGS_PAGE_POSITION = 0;
+    private static final int ALBUMS_PAGE_POSITION = 1;
 
     private ViewPager mViewPager;
 
@@ -123,11 +125,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_songs) {
-
+            mViewPager.setCurrentItem(SONGS_PAGE_POSITION);
         } else if (id == R.id.nav_artists) {
 
-        } else if (id == R.id.nav_genre) {
-
+        } else if (id == R.id.nav_albums) {
+            mViewPager.setCurrentItem(ALBUMS_PAGE_POSITION);
         } else if (id == R.id.nav_playlists) {
 
         } else if (id == R.id.nav_settings) {

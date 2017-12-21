@@ -3,9 +3,6 @@ package com.aileyzhang.musicapp.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.aileyzhang.musicapp.fragments.AlbumListFragment;
 import com.aileyzhang.musicapp.fragments.SongListFragment;
@@ -25,15 +22,14 @@ public class MainActivityContentAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        Fragment fragment = null;
         switch (position) {
             case 0:
-                fragment = new SongListFragment();
-                break;
+                return new SongListFragment();
             case 1:
-                fragment = new AlbumListFragment();
+                return new AlbumListFragment();
+            default:
+                return null;
         }
-        return fragment;
     }
 
     @Override

@@ -15,13 +15,10 @@ import com.aileyzhang.musicapp.SongData;
  */
 
 public class AlbumListFragment extends android.support.v4.app.Fragment {
-    private SongData songData;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Initialize song data
-        songData = new SongData(getContext());
     }
 
     @Nullable

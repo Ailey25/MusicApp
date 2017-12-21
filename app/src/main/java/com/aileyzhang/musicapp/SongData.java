@@ -31,8 +31,7 @@ public class SongData {
                 MediaStore.Audio.AudioColumns.DATA,
                 MediaStore.Audio.AudioColumns.TITLE,
                 MediaStore.Audio.ArtistColumns.ARTIST,
-                MediaStore.Audio.AudioColumns.ALBUM,
-                MediaStore.Audio.AudioColumns.ALBUM_ID};
+                MediaStore.Audio.AudioColumns.ALBUM,};
         Cursor cursor = context.getContentResolver().query(allSongUri, projection,
                 null, null, null);
         if (cursor != null) {

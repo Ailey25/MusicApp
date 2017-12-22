@@ -9,30 +9,24 @@ import android.widget.ListView;
 
 import com.aileyzhang.musicapp.R;
 import com.aileyzhang.musicapp.SongData;
-import com.aileyzhang.musicapp.adapters.SongListAdapter;
-
 
 /**
- * Created by Ailey on 2017-12-12.
+ * Created by Ailey on 2017-12-19.
  */
 
-public class SongListFragment extends android.support.v4.app.Fragment {
-    private SongData songData;
+public class AlbumListFragment extends android.support.v4.app.Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Initialize song data
-        songData = new SongData(getContext());
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_song_list, container, false);
-        ListView songListView = view.findViewById(R.id.songs_list_view);
-        songListView.setAdapter(new SongListAdapter(getContext(), 0, songData.mSongs));
+        View view = inflater.inflate(R.layout.fragment_album_list, container, false);
+//        ListView songListView = view.findViewById(R.id.songs_list_view);
+//        songListView.setAdapter(new SongListAdapter(getContext(), 0, songData.mSongs));
         return view;
     }
-
 }

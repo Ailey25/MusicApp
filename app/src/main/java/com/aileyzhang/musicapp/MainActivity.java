@@ -20,6 +20,9 @@ import android.view.View;
 
 import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
 
+import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.ALBUMS_PAGE_POSITION;
+import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.SONGS_PAGE_POSITION;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener,
         ActivityCompat.OnRequestPermissionsResultCallback {
@@ -123,11 +126,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_songs) {
-
+            mViewPager.setCurrentItem(SONGS_PAGE_POSITION);
         } else if (id == R.id.nav_artists) {
 
-        } else if (id == R.id.nav_genre) {
-
+        } else if (id == R.id.nav_albums) {
+            mViewPager.setCurrentItem(ALBUMS_PAGE_POSITION);
         } else if (id == R.id.nav_playlists) {
 
         } else if (id == R.id.nav_settings) {

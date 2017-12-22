@@ -7,15 +7,17 @@ import android.graphics.Bitmap;
  */
 
 public class Song {
+    public String mPath;
     public String mTitle;
     public String mArtist;
-    public String mGenre;
+    public String mAlbum;
     public Bitmap mArtwork;
 
-    public Song (String title, String artist, String genre, Bitmap artwork) {
+    public Song (String path, String title, String artist, String album, Bitmap artwork) {
+        mPath = path;
         mTitle = title;
         mArtist = artist;
-        mGenre = genre;
+        mAlbum = album;
         mArtwork = artwork;
     }
 

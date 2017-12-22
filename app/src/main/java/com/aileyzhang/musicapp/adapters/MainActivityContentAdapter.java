@@ -3,10 +3,8 @@ package com.aileyzhang.musicapp.adapters;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.PagerAdapter;
-import android.view.View;
-import android.view.ViewGroup;
 
+import com.aileyzhang.musicapp.fragments.AlbumListFragment;
 import com.aileyzhang.musicapp.fragments.SongListFragment;
 
 /**
@@ -14,6 +12,9 @@ import com.aileyzhang.musicapp.fragments.SongListFragment;
  */
 
 public class MainActivityContentAdapter extends FragmentPagerAdapter {
+    private final int TOTAL_PAGES = 2;
+    public static final int SONGS_PAGE_POSITION = 0;
+    public static final int ALBUMS_PAGE_POSITION = 1;
 
     public MainActivityContentAdapter(FragmentManager fm) {
         super(fm);
@@ -21,12 +22,19 @@ public class MainActivityContentAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
-        return new SongListFragment();
+        switch (position) {
+            case 0:
+                return new SongListFragment();
+            case 1:
+                return new AlbumListFragment();
+            default:
+                return null;
+        }
     }
 
     @Override
     public int getCount() {
-        return 1;
+        return TOTAL_PAGES;
     }
 
 }

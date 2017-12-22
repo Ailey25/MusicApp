@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -12,8 +13,10 @@
         android:textSize="30sp"
         android:padding="15dp" />
 
-    <ListView android:id="@+id/albums_list_view"
+    <GridView
+        android:id="@+id/albums_list_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        android:numColumns="auto_fit" />
 
-</android.support.constraint.ConstraintLayout>
+</LinearLayout>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -8,24 +8,30 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:gravity="center"
+        android:layout_centerInParent="true"
         android:padding="20dp">
 
-    <ImageView android:id="@+id/album_list_artwork"
-        android:layout_width="100dp"
-        android:layout_height="100dp"
-        android:src="#636363" />
+        <ImageView android:id="@+id/album_list_artwork"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:src="#636363" />
 
-    <TextView android:id="@+id/album_list_title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="7dp"
-        android:text="UNKNOWN" />
+        <TextView android:id="@+id/album_list_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="7dp"
+            android:text="UNKNOWN ALBUM" />
 
-    <TextView android:id="@+id/album_list_artist"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="7dp"
-        android:text="UNKNOWN" />
+        <TextView android:id="@+id/album_list_artist"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="7dp"
+            android:text="UNKNOWN ARTIST" />
+
+        <TextView android:id="@+id/album_list_number_of_songs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingTop="7dp" />
 
     </LinearLayout>
-</android.support.constraint.ConstraintLayout>
+</RelativeLayout>

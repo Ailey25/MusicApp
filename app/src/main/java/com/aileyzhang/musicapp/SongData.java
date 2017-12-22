@@ -17,43 +17,44 @@ import java.util.ArrayList;
  */
 
 public class SongData {
-    private Context context;
     public ArrayList<Song> mSongs = new ArrayList<>();
 
     public SongData(Context context) {
-        this.context = context;
-        loadAllSongs();
+        loadAllSongs(context);
     }
 
-    private void loadAllSongs() {
-        Uri allSongUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+    private void loadAllSongs(Context context) {
+        Uri songsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] projection = new String[]{
                 MediaStore.Audio.AudioColumns.DATA,
                 MediaStore.Audio.AudioColumns.TITLE,
                 MediaStore.Audio.ArtistColumns.ARTIST,
                 MediaStore.Audio.AudioColumns.ALBUM,};
-        Cursor cursor = context.getContentResolver().query(allSongUri, projection,
+        Cursor songCursor = context.getContentResolver().query(songsUri, projection,
                 null, null, null);
-        if (cursor != null) {
-            while (cursor.moveToNext()) {
-                String path = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
-                String title = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
-                String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                String album = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
+        try {
+            if (songCursor != null) {
+                while (songCursor.moveToNext()) {
+                    String path = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.DATA));
+                    String title = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+                    String artist = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+                    String album = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
 
-                MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
-                mediaMetadataRetriever.setDataSource(path);
-                InputStream inputStream = null;
-                if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
-                    inputStream = new ByteArrayInputStream(mediaMetadataRetriever.getEmbeddedPicture());
+                    MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+                    mediaMetadataRetriever.setDataSource(path);
+                    InputStream inputStream = null;
+                    if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
+                        inputStream = new ByteArrayInputStream(mediaMetadataRetriever.getEmbeddedPicture());
+                    }
+                    mediaMetadataRetriever.release();
+                    Bitmap art = BitmapFactory.decodeStream(inputStream);
+
+                    Song song = new Song(path, title, artist, album, art);
+                    mSongs.add(song);
                 }
-                mediaMetadataRetriever.release();
-                Bitmap art = BitmapFactory.decodeStream(inputStream);
-
-                Song song = new Song(path, title, album, artist, art);
-                mSongs.add(song);
             }
-            cursor.close();
+        } finally {
+            if (songCursor != null) songCursor.close();
         }
     }
 }

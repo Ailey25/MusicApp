@@ -23,6 +23,10 @@ public class SongData {
         loadAllSongs(context);
     }
 
+    public SongData(Context context, String albumID) {
+        loadSongsFromAlbum(albumID);
+    }
+
     private void loadAllSongs(Context context) {
         Uri songsUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
         String[] projection = new String[]{
@@ -56,5 +60,9 @@ public class SongData {
         } finally {
             if (songCursor != null) songCursor.close();
         }
+    }
+
+    private void loadSongsFromAlbum(String albumID) {
+
     }
 }

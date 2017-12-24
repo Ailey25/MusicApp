@@ -21,6 +21,7 @@ import android.view.View;
 import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
 
 import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.ALBUMS_PAGE_POSITION;
+import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.ARTISTS_PAGE_POSITION;
 import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.SONGS_PAGE_POSITION;
 
 public class MainActivity extends AppCompatActivity
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity
         // Initialize ViewPager
         mViewPager = findViewById(R.id.viewpager);
         mViewPager.setAdapter(new MainActivityContentAdapter(getSupportFragmentManager()));
-        mViewPager.setCurrentItem(0);
+        mViewPager.setCurrentItem(SONGS_PAGE_POSITION);
 
         // Check for permission and request it if it's not there
         getStoragePermission();
@@ -128,7 +129,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_songs) {
             mViewPager.setCurrentItem(SONGS_PAGE_POSITION);
         } else if (id == R.id.nav_artists) {
-
+            mViewPager.setCurrentItem(ARTISTS_PAGE_POSITION);
         } else if (id == R.id.nav_albums) {
             mViewPager.setCurrentItem(ALBUMS_PAGE_POSITION);
         } else if (id == R.id.nav_playlists) {

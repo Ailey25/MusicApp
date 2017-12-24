@@ -20,13 +20,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="7dp"
-            android:text="UNKNOWN ALBUM" />
+            android:text="@string/unknown_album" />
 
         <TextView android:id="@+id/album_list_artist"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:paddingTop="7dp"
-            android:text="UNKNOWN ARTIST" />
+            android:text="@string/unknown_artist" />
 
         <TextView android:id="@+id/album_list_number_of_songs"
             android:layout_width="wrap_content"

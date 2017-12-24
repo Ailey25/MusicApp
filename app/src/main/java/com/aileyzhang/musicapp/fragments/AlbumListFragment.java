@@ -2,6 +2,7 @@ package com.aileyzhang.musicapp.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,7 +16,8 @@ import com.aileyzhang.musicapp.adapters.AlbumListAdapter;
  * Created by Ailey on 2017-12-19.
  */
 
-public class AlbumListFragment extends android.support.v4.app.Fragment {
+public class AlbumListFragment extends Fragment implements AlbumListAdapter.AlbumAdapterListener {
+
     private AlbumData albumData;
 
     @Override
@@ -32,5 +34,10 @@ public class AlbumListFragment extends android.support.v4.app.Fragment {
         GridView albumListView = view.findViewById(R.id.albums_list_view);
         albumListView.setAdapter(new AlbumListAdapter(getContext(), 0, albumData.mAlbums));
         return view;
+    }
+
+    @Override
+    public void onAlbumClicked(String albumID) {
+
     }
 }

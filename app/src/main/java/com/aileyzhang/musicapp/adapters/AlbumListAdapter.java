@@ -20,6 +20,12 @@ import java.util.List;
  */
 
 public class AlbumListAdapter extends ArrayAdapter<Album> {
+    public interface AlbumAdapterListener {
+        void onAlbumClicked(String albumID);
+    }
+
+    AlbumAdapterListener mAlbumAdapterListener;
+
     public AlbumListAdapter(@NonNull Context context, int resource, @NonNull List<Album> objects) {
         super(context, resource, objects);
     }
@@ -31,7 +37,8 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
         if (albumListView == null) {
             albumListView = new AlbumListItemView(getContext());
         }
-        Album curAlbum = getItem(position);
+
+        final Album curAlbum = getItem(position);
 
         ImageView artwork = albumListView.findViewById(R.id.album_list_artwork);
         if (curAlbum.mArtwork != null) {
@@ -49,13 +56,22 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
         }
 
         TextView numOfSongs = albumListView.findViewById(R.id.album_list_number_of_songs);
-        String songsCount = "";
-        if (curAlbum.mNumOfSongs == 1){
+        String songsCount;
+        if (curAlbum.mNumOfSongs == 1) {
             songsCount = "1 song";
         } else {
             songsCount = curAlbum.mNumOfSongs + " songs";
         }
         numOfSongs.setText(songsCount);
+
+        albumListView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mAlbumAdapterListener != null) {
+                    mAlbumAdapterListener.onAlbumClicked(curAlbum.mAlbumID);
+                }
+            }
+        });
 
         return albumListView;
     }

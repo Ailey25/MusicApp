@@ -2,6 +2,7 @@ package com.aileyzhang.musicapp.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,7 +17,7 @@ import com.aileyzhang.musicapp.adapters.SongListAdapter;
  * Created by Ailey on 2017-12-12.
  */
 
-public class SongListFragment extends android.support.v4.app.Fragment {
+public class SongListFragment extends Fragment {
     private SongData songData;
 
     @Override

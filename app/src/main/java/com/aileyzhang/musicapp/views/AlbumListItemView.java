@@ -11,6 +11,7 @@ import com.aileyzhang.musicapp.R;
  */
 
 public class AlbumListItemView extends FrameLayout{
+
     public AlbumListItemView(@NonNull Context context) {
         super(context);
         initView();

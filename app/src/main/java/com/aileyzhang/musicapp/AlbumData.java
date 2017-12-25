@@ -15,21 +15,23 @@ import java.util.ArrayList;
 
 public class AlbumData {
     public ArrayList<Album> mAlbums = new ArrayList<>();
+    private final Uri ALBUMS_URI = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
 
     public AlbumData(Context context) {
         loadAllAlbums(context);
     }
 
     private void loadAllAlbums(Context context) {
-        Uri albumsUri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
         String[] projection = new String[] {
                 MediaStore.Audio.Albums._ID,
                 MediaStore.Audio.Albums.ALBUM,
                 MediaStore.Audio.Albums.ARTIST,
                 MediaStore.Audio.Albums.NUMBER_OF_SONGS,
                 MediaStore.Audio.Albums.ALBUM_ART,};
-        Cursor albumCursor = context.getContentResolver().query(albumsUri, projection,
+
+        Cursor albumCursor = context.getContentResolver().query(ALBUMS_URI, projection,
                 null, null, null);
+
         try {
             if (albumCursor != null) {
                 while (albumCursor.moveToNext()) {

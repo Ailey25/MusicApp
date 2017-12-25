@@ -1,4 +1,4 @@
-package com.aileyzhang.musicapp;
+package com.aileyzhang.musicapp.activities;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
@@ -18,6 +18,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import com.aileyzhang.musicapp.R;
 import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
 
 import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.ALBUMS_PAGE_POSITION;
@@ -29,8 +30,9 @@ public class MainActivity extends AppCompatActivity
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int SDCARD_PERMISSION_REQUEST_CODE = 1;
-
-    private ViewPager mViewPager;
+    public static MainActivityContentAdapter mMainActivityContentAdapter;
+    public ViewPager mMainViewPager;
+    public ViewPager mAlbumViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +61,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setCheckedItem(R.id.nav_songs);
 
         // Initialize ViewPager
-        mViewPager = findViewById(R.id.viewpager);
-        mViewPager.setAdapter(new MainActivityContentAdapter(getSupportFragmentManager()));
-        mViewPager.setCurrentItem(SONGS_PAGE_POSITION);
+        mMainViewPager = findViewById(R.id.main_view_pager);
+        mMainActivityContentAdapter = new MainActivityContentAdapter(getSupportFragmentManager());
+        mMainViewPager.setAdapter(mMainActivityContentAdapter);
+        mMainViewPager.setCurrentItem(SONGS_PAGE_POSITION);
 
         // Check for permission and request it if it's not there
         getStoragePermission();
@@ -127,11 +130,11 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.nav_songs) {
-            mViewPager.setCurrentItem(SONGS_PAGE_POSITION);
+            mMainViewPager.setCurrentItem(SONGS_PAGE_POSITION);
         } else if (id == R.id.nav_artists) {
-            mViewPager.setCurrentItem(ARTISTS_PAGE_POSITION);
+            mMainViewPager.setCurrentItem(ARTISTS_PAGE_POSITION);
         } else if (id == R.id.nav_albums) {
-            mViewPager.setCurrentItem(ALBUMS_PAGE_POSITION);
+            mMainViewPager.setCurrentItem(ALBUMS_PAGE_POSITION);
         } else if (id == R.id.nav_playlists) {
 
         } else if (id == R.id.nav_settings) {
@@ -144,6 +147,4 @@ public class MainActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
-
 }

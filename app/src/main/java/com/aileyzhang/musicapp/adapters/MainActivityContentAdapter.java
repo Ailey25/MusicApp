@@ -13,6 +13,7 @@ import com.aileyzhang.musicapp.fragments.SongListFragment;
  */
 
 public class MainActivityContentAdapter extends FragmentPagerAdapter {
+
     private final int TOTAL_PAGES = 3;
     public static final int SONGS_PAGE_POSITION = 0;
     public static final int ARTISTS_PAGE_POSITION = 1;
@@ -26,7 +27,7 @@ public class MainActivityContentAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case SONGS_PAGE_POSITION:
-                return new SongListFragment();
+                return SongListFragment.newInstance(1, "");
             case ARTISTS_PAGE_POSITION:
                 return new ArtistListFragment();
             case ALBUMS_PAGE_POSITION:

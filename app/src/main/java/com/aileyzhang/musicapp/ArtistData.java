@@ -13,19 +13,21 @@ import java.util.ArrayList;
 
 public class ArtistData {
     public ArrayList<Artist> mArtists = new ArrayList<>();
+    private final Uri ARTISTS_URI = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
 
     public ArtistData(Context context) {
         loadAllArtists(context);
     }
 
     private void loadAllArtists(Context context) {
-        Uri artistsUri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
         String[] projection = new String[]{
                 MediaStore.Audio.Artists.ARTIST,
                 MediaStore.Audio.Artists.NUMBER_OF_ALBUMS,
                 MediaStore.Audio.Artists.ARTIST_KEY,};
-        Cursor artistCursor = context.getContentResolver().query(artistsUri, projection,
+
+        Cursor artistCursor = context.getContentResolver().query(ARTISTS_URI, projection,
                 null, null, null);
+
         try {
             if (artistCursor != null) {
                 while (artistCursor.moveToNext()) {

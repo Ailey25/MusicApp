@@ -32,7 +32,6 @@ public class MainActivity extends AppCompatActivity
     private static final int SDCARD_PERMISSION_REQUEST_CODE = 1;
     public static MainActivityContentAdapter mMainActivityContentAdapter;
     public ViewPager mMainViewPager;
-    public ViewPager mAlbumViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

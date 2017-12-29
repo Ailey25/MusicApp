@@ -19,14 +19,12 @@ import com.aileyzhang.musicapp.adapters.SongListAdapter;
 
 public class SongsTabFragment extends Fragment {
 
-    private SongData songData;
-
-    public static final SongsTabFragment newInstance(int showAllSongs, String albumID) {
+    public static final SongsTabFragment newInstance(int showAllSongs, String albumName) {
         SongsTabFragment songsTabFragment = new SongsTabFragment();
         Bundle bundle = new Bundle(2);
         //bundle.putParcelableArrayList("SONGS", songArrayList);
         bundle.putInt("SHOW_ALL_SONGS", showAllSongs);
-        bundle.putString("ALBUM_ID", albumID);
+        bundle.putString("ALBUM_NAME", albumName);
         songsTabFragment.setArguments(bundle);
         return songsTabFragment;
     }
@@ -34,7 +32,6 @@ public class SongsTabFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        songData = new SongData((getContext()));
     }
 
     @Nullable
@@ -42,7 +39,7 @@ public class SongsTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_songs_tab, container, false);
         ListView songListView = view.findViewById(R.id.songs_list_view);
-        songListView.setAdapter(new SongListAdapter(getContext(), 0, songData.mSongs));
+        songListView.setAdapter(new SongListAdapter(getContext(), 0, SongData.getAllSongs(getContext())));
         return view;
     }
 }

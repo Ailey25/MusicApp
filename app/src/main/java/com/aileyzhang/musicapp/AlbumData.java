@@ -14,14 +14,10 @@ import java.util.ArrayList;
  */
 
 public class AlbumData {
-    public ArrayList<Album> mAlbums = new ArrayList<>();
-    private final Uri ALBUMS_URI = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+    private static final Uri ALBUMS_URI = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
 
-    public AlbumData(Context context) {
-        loadAllAlbums(context);
-    }
-
-    private void loadAllAlbums(Context context) {
+    public static ArrayList<Album> getAllAlbums(Context context) {
+        ArrayList<Album> albums = new ArrayList<>();
         String[] projection = new String[] {
                 MediaStore.Audio.Albums._ID,
                 MediaStore.Audio.Albums.ALBUM,
@@ -44,9 +40,10 @@ public class AlbumData {
                     Bitmap art = BitmapFactory.decodeFile(albumArt);
 
                     Album album = new Album(id, albumName, artist, Integer.parseInt(numOfSongs), art);
-                    mAlbums.add(album);
+                    albums.add(album);
                 }
             }
+            return albums;
         } finally {
             if (albumCursor != null) albumCursor.close();
         }

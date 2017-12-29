@@ -17,23 +17,17 @@ import java.util.ArrayList;
  */
 
 public class SongData {
-    public ArrayList<Song> mSongs = new ArrayList<>();
     private static final Uri MEDIA_URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-    private Context mContext;
 
-    public SongData(Context context) {
-        mContext = context;
-        loadAllSongs();
-    }
-
-    private void loadAllSongs() {
+    public static ArrayList<Song> getAllSongs (Context context) {
+        ArrayList<Song> songs = new ArrayList<>();
         String[] projection = new String[]{
                 MediaStore.Audio.AudioColumns.DATA,
                 MediaStore.Audio.AudioColumns.TITLE,
                 MediaStore.Audio.ArtistColumns.ARTIST,
                 MediaStore.Audio.AudioColumns.ALBUM,};
 
-        Cursor songCursor = mContext.getContentResolver().query(MEDIA_URI, projection,
+        Cursor songCursor = context.getContentResolver().query(MEDIA_URI, projection,
                 null, null, null);
 
         try {
@@ -54,25 +48,26 @@ public class SongData {
                     Bitmap art = BitmapFactory.decodeStream(inputStream);
 
                     Song song = new Song(path, title, artist, album, art);
-                    mSongs.add(song);
+                    songs.add(song);
                 }
             }
+            return songs;
         } finally {
             if (songCursor != null) songCursor.close();
         }
     }
 
-    public ArrayList<Song> loadSongsFromAlbum(String albumID) {
+    public static ArrayList<Song> getSongsInAlbum (Context context, String albumName) {
         ArrayList<Song> songs = new ArrayList<>();
         String[] projection = new String[]{
                 MediaStore.Audio.AudioColumns.DATA,
                 MediaStore.Audio.AudioColumns.TITLE,
                 MediaStore.Audio.ArtistColumns.ARTIST,
                 MediaStore.Audio.AudioColumns.ALBUM,};
-        String selection = MediaStore.Audio.AudioColumns._ID + "=?";
-        String[] selectionArgs = new String[] {"" + albumID};
+        String selection = MediaStore.Audio.AudioColumns.ALBUM + "=?";
+        String[] selectionArgs = new String[] {"" + albumName};
 
-        Cursor songCursor = mContext.getContentResolver().query(MEDIA_URI, projection,
+        Cursor songCursor = context.getContentResolver().query(MEDIA_URI, projection,
                 selection, selectionArgs, null);
 
         try {

@@ -30,7 +30,7 @@ public class MainActivity extends AppCompatActivity
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int SDCARD_PERMISSION_REQUEST_CODE = 1;
-    public static MainActivityContentAdapter mMainActivityContentAdapter;
+    public MainActivityContentAdapter mMainActivityContentAdapter;
     public ViewPager mMainViewPager;
 
     @Override

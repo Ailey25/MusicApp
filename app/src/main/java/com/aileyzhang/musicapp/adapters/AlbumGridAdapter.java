@@ -19,14 +19,15 @@ import java.util.List;
  * Created by Ailey on 2017-12-19.
  */
 
-public class AlbumListAdapter extends ArrayAdapter<Album> {
+public class AlbumGridAdapter extends ArrayAdapter<Album> {
+
     public interface AlbumAdapterListener {
         void onAlbumClicked(String albumID);
     }
 
-    AlbumAdapterListener mAlbumAdapterListener;
+    private AlbumAdapterListener mAlbumAdapterListener;
 
-    public AlbumListAdapter(@NonNull Context context, int resource, @NonNull List<Album> objects) {
+    public AlbumGridAdapter(@NonNull Context context, int resource, @NonNull List<Album> objects) {
         super(context, resource, objects);
     }
 

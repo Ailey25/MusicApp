@@ -4,9 +4,9 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-import com.aileyzhang.musicapp.fragments.AlbumListFragment;
-import com.aileyzhang.musicapp.fragments.ArtistListFragment;
-import com.aileyzhang.musicapp.fragments.SongListFragment;
+import com.aileyzhang.musicapp.fragments.AlbumsTabFragment;
+import com.aileyzhang.musicapp.fragments.ArtistsTabFragment;
+import com.aileyzhang.musicapp.fragments.SongsTabFragment;
 
 /**
  * Created by Ailey on 2017-12-12.
@@ -27,11 +27,11 @@ public class MainActivityContentAdapter extends FragmentPagerAdapter {
     public Fragment getItem(int position) {
         switch (position) {
             case SONGS_PAGE_POSITION:
-                return SongListFragment.newInstance(1, "");
+                return SongsTabFragment.newInstance(1, "");
             case ARTISTS_PAGE_POSITION:
-                return new ArtistListFragment();
+                return new ArtistsTabFragment();
             case ALBUMS_PAGE_POSITION:
-                return new AlbumListFragment();
+                return new AlbumsTabFragment();
             default:
                 return null;
         }

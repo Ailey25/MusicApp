@@ -11,10 +11,17 @@ import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.ListView;
 
+import com.aileyzhang.musicapp.Album;
 import com.aileyzhang.musicapp.AlbumData;
 import com.aileyzhang.musicapp.R;
+import com.aileyzhang.musicapp.SongData;
 import com.aileyzhang.musicapp.adapters.AlbumGridAdapter;
 import com.aileyzhang.musicapp.adapters.AlbumViewPagerAdapter;
+import com.aileyzhang.musicapp.adapters.SongListAdapter;
+
+import java.util.ArrayList;
+
+import static com.aileyzhang.musicapp.adapters.AlbumViewPagerAdapter.ALBUM_SONG_LIST_VIEW;
 
 /**
  * Created by Ailey on 2017-12-19.
@@ -22,7 +29,6 @@ import com.aileyzhang.musicapp.adapters.AlbumViewPagerAdapter;
 
 public class AlbumsTabFragment extends Fragment implements AlbumGridAdapter.AlbumAdapterListener {
 
-    private AlbumData albumData;
     private ViewPager mAlbumViewPager;
     private GridView albumGridView;
     private ListView albumSongsListView;
@@ -30,8 +36,6 @@ public class AlbumsTabFragment extends Fragment implements AlbumGridAdapter.Albu
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Initialize album data
-        albumData = new AlbumData(getContext());
     }
 
     @Nullable
@@ -42,7 +46,7 @@ public class AlbumsTabFragment extends Fragment implements AlbumGridAdapter.Albu
         albumGridView = view.findViewById(R.id.albums_grid_view);
         albumSongsListView = view.findViewById(R.id.album_songs_listview);
 
-        AlbumGridAdapter albumGridAdapter = new AlbumGridAdapter(getContext(), 0, albumData.mAlbums);
+        AlbumGridAdapter albumGridAdapter = new AlbumGridAdapter(getContext(), 0, AlbumData.getAllAlbums(getContext()));
         albumGridAdapter.setListener(this);
         albumGridView.setAdapter(albumGridAdapter);
 
@@ -51,8 +55,10 @@ public class AlbumsTabFragment extends Fragment implements AlbumGridAdapter.Albu
         return view;
     }
 
-    public void onAlbumClicked(String albumID) {
-        // Load songs, flip mAlbumViewPager to song list view...
-        Log.e("ASDF", "LOAD SONGS, SHOW SONG LIST");
+    public void onAlbumClicked(String albumName) {
+        SongListAdapter songListAdapter = new SongListAdapter(getContext(), 0,
+                SongData.getSongsInAlbum(getContext(), albumName));
+        albumSongsListView.setAdapter(songListAdapter);
+        mAlbumViewPager.setCurrentItem(ALBUM_SONG_LIST_VIEW);
     }
 }

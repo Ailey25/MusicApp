@@ -22,7 +22,7 @@ import java.util.List;
 public class AlbumGridAdapter extends ArrayAdapter<Album> {
 
     public interface AlbumAdapterListener {
-        void onAlbumClicked(String albumID);
+        void onAlbumClicked(String albumName);
     }
 
     private AlbumAdapterListener mAlbumAdapterListener;
@@ -50,8 +50,8 @@ public class AlbumGridAdapter extends ArrayAdapter<Album> {
         }
 
         TextView title = albumItemView.findViewById(R.id.album_list_title);
-        if (curAlbum.mTitle != null && !curAlbum.mTitle.isEmpty()) {
-            title.setText(curAlbum.mTitle);
+        if (curAlbum.mAlbumTitle != null && !curAlbum.mAlbumTitle.isEmpty()) {
+            title.setText(curAlbum.mAlbumTitle);
         }
 
         if (curAlbum.mArtist != null && !curAlbum.mArtist.isEmpty()) {
@@ -72,7 +72,7 @@ public class AlbumGridAdapter extends ArrayAdapter<Album> {
             @Override
             public void onClick(View view) {
                 if (mAlbumAdapterListener != null) {
-                    mAlbumAdapterListener.onAlbumClicked(curAlbum.mAlbumID);
+                    mAlbumAdapterListener.onAlbumClicked(curAlbum.mAlbumTitle);
                 }
             }
         });

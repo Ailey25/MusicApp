@@ -8,14 +8,14 @@ import android.graphics.Bitmap;
 
 public class Album {
     public String mAlbumID;
-    public String mTitle;
+    public String mAlbumTitle;
     public String mArtist;
     public int mNumOfSongs;
     public Bitmap mArtwork;
 
     public Album (String id, String title, String artist, int numOfSongs, Bitmap artwork) {
         mAlbumID = id;
-        mTitle = title;
+        mAlbumTitle = title;
         mArtist = artist;
         mNumOfSongs = numOfSongs;
         mArtwork = artwork;

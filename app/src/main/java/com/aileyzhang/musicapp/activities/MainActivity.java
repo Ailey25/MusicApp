@@ -30,8 +30,8 @@ public class MainActivity extends AppCompatActivity
         ActivityCompat.OnRequestPermissionsResultCallback {
 
     private static final int SDCARD_PERMISSION_REQUEST_CODE = 1;
-    public MainActivityContentAdapter mMainActivityContentAdapter;
-    public ViewPager mMainViewPager;
+    private MainActivityContentAdapter mMainActivityContentAdapter;
+    private ViewPager mMainViewPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

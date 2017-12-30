@@ -56,9 +56,8 @@ public class AlbumsTabFragment extends Fragment implements AlbumGridAdapter.Albu
     }
 
     public void onAlbumClicked(String albumName) {
-        SongListAdapter songListAdapter = new SongListAdapter(getContext(), 0,
-                SongData.getSongsInAlbum(getContext(), albumName));
-        albumSongsListView.setAdapter(songListAdapter);
-        mAlbumViewPager.setCurrentItem(ALBUM_SONG_LIST_VIEW);
+        albumSongsListView.setAdapter(new SongListAdapter(getContext(), 0,
+                SongData.getSongsInAlbum(getContext(), albumName)));
+        mAlbumViewPager.setCurrentItem(AlbumViewPagerAdapter.ALBUM_SONG_LIST_VIEW);
     }
 }

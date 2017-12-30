@@ -104,6 +104,7 @@ public class SongData {
                 MediaStore.Audio.AudioColumns.TITLE,
                 MediaStore.Audio.ArtistColumns.ARTIST,
                 MediaStore.Audio.AudioColumns.ALBUM,};
+
         String selection = MediaStore.Audio.AudioColumns.ARTIST + "=?";
         String[] selectionArgs = new String[] {artistName};
 

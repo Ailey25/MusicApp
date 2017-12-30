@@ -16,7 +16,7 @@ import com.aileyzhang.musicapp.adapters.ArtistListAdapter;
  * Created by Ailey on 2017-12-23.
  */
 
-public class ArtistListFragment extends Fragment implements ArtistListAdapter.ArtistAdapterListener {
+public class ArtistsTabFragment extends Fragment implements ArtistListAdapter.ArtistAdapterListener {
 
     private ArtistData artistData;
 
@@ -30,7 +30,7 @@ public class ArtistListFragment extends Fragment implements ArtistListAdapter.Ar
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_artist_list, container, false);
+        View view = inflater.inflate(R.layout.fragment_artists_tab, container, false);
         ListView albumListView = view.findViewById(R.id.artists_list_view);
         albumListView.setAdapter(new ArtistListAdapter(getContext(), 0, artistData.mArtists));
         return view;

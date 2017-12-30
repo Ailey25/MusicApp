@@ -19,43 +19,47 @@ import java.util.List;
  * Created by Ailey on 2017-12-19.
  */
 
-public class AlbumListAdapter extends ArrayAdapter<Album> {
+public class AlbumGridAdapter extends ArrayAdapter<Album> {
+
     public interface AlbumAdapterListener {
-        void onAlbumClicked(String albumID);
+        void onAlbumClicked(String albumName);
     }
 
-    AlbumAdapterListener mAlbumAdapterListener;
+    private AlbumAdapterListener mAlbumAdapterListener;
 
-    public AlbumListAdapter(@NonNull Context context, int resource, @NonNull List<Album> objects) {
+    public AlbumGridAdapter(@NonNull Context context, int resource, @NonNull List<Album> objects) {
         super(context, resource, objects);
+    }
+
+    public void setListener(AlbumAdapterListener listener) {
+        mAlbumAdapterListener = listener;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        View albumListView = convertView;
-        if (albumListView == null) {
-            albumListView = new AlbumListItemView(getContext());
+        final Album curAlbum = getItem(position);
+        View albumItemView = convertView;
+        if (albumItemView == null) {
+            albumItemView = new AlbumListItemView(getContext());
         }
 
-        final Album curAlbum = getItem(position);
-
-        ImageView artwork = albumListView.findViewById(R.id.album_list_artwork);
+        ImageView artwork = albumItemView.findViewById(R.id.album_list_artwork);
         if (curAlbum.mArtwork != null) {
             artwork.setImageBitmap(curAlbum.mArtwork);
         }
 
-        TextView title = albumListView.findViewById(R.id.album_list_title);
-        if (curAlbum.mTitle != null && !curAlbum.mTitle.isEmpty()) {
-            title.setText(curAlbum.mTitle);
+        TextView title = albumItemView.findViewById(R.id.album_list_title);
+        if (curAlbum.mAlbumTitle != null && !curAlbum.mAlbumTitle.isEmpty()) {
+            title.setText(curAlbum.mAlbumTitle);
         }
 
         if (curAlbum.mArtist != null && !curAlbum.mArtist.isEmpty()) {
-            TextView artist = albumListView.findViewById(R.id.album_list_artist);
+            TextView artist = albumItemView.findViewById(R.id.album_list_artist);
             artist.setText(curAlbum.mArtist);
         }
 
-        TextView numOfSongs = albumListView.findViewById(R.id.album_list_number_of_songs);
+        TextView numOfSongs = albumItemView.findViewById(R.id.album_list_number_of_songs);
         String songsCount;
         if (curAlbum.mNumOfSongs == 1) {
             songsCount = "1 song";
@@ -64,15 +68,15 @@ public class AlbumListAdapter extends ArrayAdapter<Album> {
         }
         numOfSongs.setText(songsCount);
 
-        albumListView.setOnClickListener(new View.OnClickListener() {
+        albumItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (mAlbumAdapterListener != null) {
-                    mAlbumAdapterListener.onAlbumClicked(curAlbum.mAlbumID);
+                    mAlbumAdapterListener.onAlbumClicked(curAlbum.mAlbumTitle);
                 }
             }
         });
 
-        return albumListView;
+        return albumItemView;
     }
 }

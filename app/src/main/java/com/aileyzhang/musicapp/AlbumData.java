@@ -14,22 +14,20 @@ import java.util.ArrayList;
  */
 
 public class AlbumData {
-    public ArrayList<Album> mAlbums = new ArrayList<>();
+    private static final Uri ALBUMS_URI = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
 
-    public AlbumData(Context context) {
-        loadAllAlbums(context);
-    }
-
-    private void loadAllAlbums(Context context) {
-        Uri albumsUri = MediaStore.Audio.Albums.EXTERNAL_CONTENT_URI;
+    public static ArrayList<Album> getAllAlbums(Context context) {
+        ArrayList<Album> albums = new ArrayList<>();
         String[] projection = new String[] {
                 MediaStore.Audio.Albums._ID,
                 MediaStore.Audio.Albums.ALBUM,
                 MediaStore.Audio.Albums.ARTIST,
                 MediaStore.Audio.Albums.NUMBER_OF_SONGS,
                 MediaStore.Audio.Albums.ALBUM_ART,};
-        Cursor albumCursor = context.getContentResolver().query(albumsUri, projection,
+
+        Cursor albumCursor = context.getContentResolver().query(ALBUMS_URI, projection,
                 null, null, null);
+
         try {
             if (albumCursor != null) {
                 while (albumCursor.moveToNext()) {
@@ -42,9 +40,10 @@ public class AlbumData {
                     Bitmap art = BitmapFactory.decodeFile(albumArt);
 
                     Album album = new Album(id, albumName, artist, Integer.parseInt(numOfSongs), art);
-                    mAlbums.add(album);
+                    albums.add(album);
                 }
             }
+            return albums;
         } finally {
             if (albumCursor != null) albumCursor.close();
         }

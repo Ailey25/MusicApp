@@ -2,9 +2,14 @@ package com.aileyzhang.musicapp;
 
 import android.content.Context;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.provider.MediaStore;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 
 /**
@@ -12,14 +17,10 @@ import java.util.ArrayList;
  */
 
 public class ArtistData {
-    public ArrayList<Artist> mArtists = new ArrayList<>();
-    private final Uri ARTISTS_URI = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
+    private static final Uri ARTISTS_URI = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
 
-    public ArtistData(Context context) {
-        loadAllArtists(context);
-    }
-
-    private void loadAllArtists(Context context) {
+    public static ArrayList<Artist> getAllArtists(Context context) {
+        ArrayList<Artist> artists = new ArrayList<>();
         String[] projection = new String[]{
                 MediaStore.Audio.Artists.ARTIST,
                 MediaStore.Audio.Artists.NUMBER_OF_ALBUMS,
@@ -36,9 +37,10 @@ public class ArtistData {
                     String artistKey = artistCursor.getString(artistCursor.getColumnIndex(MediaStore.Audio.Artists.ARTIST_KEY));
 
                     Artist artist = new Artist(artistName, albumsCount, artistKey);
-                    mArtists.add(artist);
+                    artists.add(artist);
                 }
             }
+            return artists;
         } finally {
             if (artistCursor != null) artistCursor.close();
         }

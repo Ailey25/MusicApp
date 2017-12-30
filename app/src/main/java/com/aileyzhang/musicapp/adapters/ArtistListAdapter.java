@@ -22,10 +22,14 @@ public class ArtistListAdapter extends ArrayAdapter<Artist> {
     public interface ArtistAdapterListener {
         void onArtistClick(String artistKey);
     }
-    ArtistAdapterListener mArtistAdapterListener;
+    private ArtistAdapterListener mArtistAdapterListener;
 
     public ArtistListAdapter(@NonNull Context context, int resource, @NonNull List<Artist> objects) {
         super(context, resource, objects);
+    }
+
+    public void setListener(ArtistAdapterListener artistAdapterListener) {
+        mArtistAdapterListener = artistAdapterListener;
     }
 
     @NonNull
@@ -56,7 +60,7 @@ public class ArtistListAdapter extends ArrayAdapter<Artist> {
             @Override
             public void onClick(View view) {
                 if (mArtistAdapterListener != null) {
-                    mArtistAdapterListener.onArtistClick(curArtist.mArtistKey);
+                    mArtistAdapterListener.onArtistClick(curArtist.mArtist);
                 }
             }
         });

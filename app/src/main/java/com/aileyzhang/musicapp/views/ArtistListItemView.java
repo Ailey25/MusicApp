@@ -18,6 +18,6 @@ public class ArtistListItemView extends FrameLayout {
     }
 
     private void initView() {
-        inflate(getContext(), R.layout.artist_list_item, this);
+        inflate(getContext(), R.layout.item_artist_in_list, this);
     }
 }

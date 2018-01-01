@@ -16,4 +16,6 @@
     <string name="unknown_title">UNKNOWN TITLE</string>
     <string name="unknown_artist">UNKNOWN ARTIST</string>
     <string name="unknown_album">UNKNOWN ALBUM</string>
+
+    <string name="start_duration">0:00</string>
 </resources>

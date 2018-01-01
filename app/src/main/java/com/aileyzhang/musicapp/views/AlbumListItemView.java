@@ -18,6 +18,6 @@ public class AlbumListItemView extends FrameLayout{
     }
 
     private void initView() {
-        inflate(getContext(), R.layout.album_list_item, this);
+        inflate(getContext(), R.layout.item_album_in_list, this);
     }
 }

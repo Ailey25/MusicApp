@@ -25,7 +25,8 @@ public class SongData {
                 MediaStore.Audio.AudioColumns.DATA,
                 MediaStore.Audio.AudioColumns.TITLE,
                 MediaStore.Audio.ArtistColumns.ARTIST,
-                MediaStore.Audio.AudioColumns.ALBUM,};
+                MediaStore.Audio.AudioColumns.ALBUM,
+                MediaStore.Audio.AudioColumns.DURATION,};
 
         Cursor songCursor = context.getContentResolver().query(MEDIA_URI, projection,
                 null, null, null);
@@ -37,7 +38,7 @@ public class SongData {
                     String title = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                     String artist = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                     String album = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
-
+                    String duration = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
                     MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
                     mediaMetadataRetriever.setDataSource(path);
                     InputStream inputStream = null;
@@ -47,7 +48,7 @@ public class SongData {
                     mediaMetadataRetriever.release();
                     Bitmap art = BitmapFactory.decodeStream(inputStream);
 
-                    Song song = new Song(path, title, artist, album, art);
+                    Song song = new Song(path, title, artist, album, art, duration);
                     songs.add(song);
                 }
             }
@@ -63,7 +64,8 @@ public class SongData {
                 MediaStore.Audio.AudioColumns.DATA,
                 MediaStore.Audio.AudioColumns.TITLE,
                 MediaStore.Audio.ArtistColumns.ARTIST,
-                MediaStore.Audio.AudioColumns.ALBUM,};
+                MediaStore.Audio.AudioColumns.ALBUM,
+                MediaStore.Audio.AudioColumns.DURATION,};
         String selection = MediaStore.Audio.AudioColumns.ALBUM + "=?";
         String[] selectionArgs = new String[] {albumName};
 
@@ -77,6 +79,7 @@ public class SongData {
                     String title = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                     String artist = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                     String album = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
+                    String duration = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
 
                     MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
                     mediaMetadataRetriever.setDataSource(path);
@@ -87,7 +90,7 @@ public class SongData {
                     mediaMetadataRetriever.release();
                     Bitmap art = BitmapFactory.decodeStream(inputStream);
 
-                    Song song = new Song(path, title, artist, album, art);
+                    Song song = new Song(path, title, artist, album, art, duration);
                     songs.add(song);
                 }
             }
@@ -103,7 +106,8 @@ public class SongData {
                 MediaStore.Audio.AudioColumns.DATA,
                 MediaStore.Audio.AudioColumns.TITLE,
                 MediaStore.Audio.ArtistColumns.ARTIST,
-                MediaStore.Audio.AudioColumns.ALBUM,};
+                MediaStore.Audio.AudioColumns.ALBUM,
+                MediaStore.Audio.AudioColumns.DURATION,};
 
         String selection = MediaStore.Audio.AudioColumns.ARTIST + "=?";
         String[] selectionArgs = new String[] {artistName};
@@ -118,6 +122,7 @@ public class SongData {
                     String title = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                     String artist = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                     String album = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
+                    String duration = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
 
                     MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
                     mediaMetadataRetriever.setDataSource(path);
@@ -128,7 +133,7 @@ public class SongData {
                     mediaMetadataRetriever.release();
                     Bitmap art = BitmapFactory.decodeStream(inputStream);
 
-                    Song song = new Song(path, title, artist, album, art);
+                    Song song = new Song(path, title, artist, album, art, duration);
                     songs.add(song);
                 }
             }

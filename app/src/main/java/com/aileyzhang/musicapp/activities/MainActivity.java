@@ -1,6 +1,8 @@
 package com.aileyzhang.musicapp.activities;
 
 import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -14,9 +16,13 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
 
 import com.aileyzhang.musicapp.R;
 import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     private static final int SDCARD_PERMISSION_REQUEST_CODE = 1;
     private MainActivityContentAdapter mMainActivityContentAdapter;
     private ViewPager mMainViewPager;
+    public static ViewGroup currentSongLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,15 +46,6 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -58,6 +56,9 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_songs);
+
+        // Initialize Current song layout
+        currentSongLayout = findViewById(R.id.current_song_layout);
 
         // Initialize ViewPager
         mMainViewPager = findViewById(R.id.main_view_pager);

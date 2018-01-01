@@ -18,6 +18,6 @@ public class SongListItemView extends FrameLayout {
     }
 
     private void initView() {
-       inflate(getContext(), R.layout.song_list_item, this);
+       inflate(getContext(), R.layout.item_song_in_list, this);
     }
 }

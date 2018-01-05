@@ -7,17 +7,17 @@ import android.widget.FrameLayout;
 import com.aileyzhang.musicapp.R;
 
 /**
- * Created by Ailey on 2017-12-23.
+ * Created by Ailey on 2018-01-03.
  */
 
-public class ArtistListItemView extends FrameLayout {
+public class PlaylistListItemView extends FrameLayout {
 
-    public ArtistListItemView(@NonNull Context context) {
+    public PlaylistListItemView(@NonNull Context context) {
         super(context);
         initView();
     }
 
     private void initView() {
-        inflate(getContext(), R.layout.item_artist_in_list, this);
+        inflate(getContext(), R.layout.item_playlist_in_list, this);
     }
 }

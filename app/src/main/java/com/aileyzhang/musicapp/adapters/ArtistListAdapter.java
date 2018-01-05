@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.aileyzhang.musicapp.Artist;
+import com.aileyzhang.musicapp.data.Artist;
 import com.aileyzhang.musicapp.R;
 import com.aileyzhang.musicapp.views.ArtistListItemView;
 

@@ -9,7 +9,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.aileyzhang.musicapp.R;
-import com.aileyzhang.musicapp.SongData;
+import com.aileyzhang.musicapp.data.SongData;
 import com.aileyzhang.musicapp.adapters.SongListAdapter;
 
 
@@ -22,7 +22,6 @@ public class SongsTabFragment extends Fragment {
     public static final SongsTabFragment newInstance(int showAllSongs, String albumName) {
         SongsTabFragment songsTabFragment = new SongsTabFragment();
         Bundle bundle = new Bundle(2);
-        //bundle.putParcelableArrayList("SONGS", songArrayList);
         bundle.putInt("SHOW_ALL_SONGS", showAllSongs);
         bundle.putString("ALBUM_NAME", albumName);
         songsTabFragment.setArguments(bundle);

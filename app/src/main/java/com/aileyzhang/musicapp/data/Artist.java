@@ -1,4 +1,4 @@
-package com.aileyzhang.musicapp;
+package com.aileyzhang.musicapp.data;
 
 /**
  * Created by Ailey on 2017-12-23.

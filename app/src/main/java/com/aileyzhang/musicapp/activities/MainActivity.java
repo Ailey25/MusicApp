@@ -29,6 +29,7 @@ import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
 
 import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.ALBUMS_PAGE_POSITION;
 import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.ARTISTS_PAGE_POSITION;
+import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.PLAYLISTS_PAGE_POSITION;
 import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.SONGS_PAGE_POSITION;
 
 public class MainActivity extends AppCompatActivity
@@ -136,7 +137,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_albums) {
             mMainViewPager.setCurrentItem(ALBUMS_PAGE_POSITION);
         } else if (id == R.id.nav_playlists) {
-
+            mMainViewPager.setCurrentItem(PLAYLISTS_PAGE_POSITION);
         } else if (id == R.id.nav_settings) {
 
         } else if (id == R.id.nav_equalizer) {

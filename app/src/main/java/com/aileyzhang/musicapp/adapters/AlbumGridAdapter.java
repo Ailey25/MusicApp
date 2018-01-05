@@ -9,7 +9,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aileyzhang.musicapp.Album;
+import com.aileyzhang.musicapp.data.Album;
 import com.aileyzhang.musicapp.R;
 import com.aileyzhang.musicapp.views.AlbumListItemView;
 

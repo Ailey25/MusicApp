@@ -8,14 +8,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.aileyzhang.musicapp.ArtistData;
+import com.aileyzhang.musicapp.data.ArtistData;
 import com.aileyzhang.musicapp.R;
-import com.aileyzhang.musicapp.SongData;
+import com.aileyzhang.musicapp.data.SongData;
 import com.aileyzhang.musicapp.adapters.ArtistListAdapter;
 import com.aileyzhang.musicapp.adapters.ArtistViewPagerAdapter;
 import com.aileyzhang.musicapp.adapters.SongListAdapter;
-import com.aileyzhang.musicapp.views.ArtistListItemView;
 
 /**
  * Created by Ailey on 2017-12-23.
@@ -23,6 +23,7 @@ import com.aileyzhang.musicapp.views.ArtistListItemView;
 
 public class ArtistsTabFragment extends Fragment implements ArtistListAdapter.ArtistAdapterListener {
 
+    private View view;
     private ViewPager mArtistViewPager;
     private ListView artistListView;
     private ListView artistSongsListView;
@@ -35,7 +36,7 @@ public class ArtistsTabFragment extends Fragment implements ArtistListAdapter.Ar
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_artists_tab, container, false);
+        view = inflater.inflate(R.layout.fragment_artists_tab, container, false);
         mArtistViewPager = view.findViewById(R.id.artist_view_pager);
         artistListView = view.findViewById(R.id.artist_list_view);
         artistSongsListView = view.findViewById(R.id.artist_songs_listview);
@@ -52,6 +53,9 @@ public class ArtistsTabFragment extends Fragment implements ArtistListAdapter.Ar
 
     @Override
     public void onArtistClick(String artistName) {
+        TextView tv = view.findViewById(R.id.artist_name_of_songs);
+        tv.setText(artistName);
+
         artistSongsListView.setAdapter(new SongListAdapter(getContext(), 0,
                 SongData.getSongsInArtist(getContext(), artistName)));
         mArtistViewPager.setCurrentItem(ArtistViewPagerAdapter.ARTIST_SONG_LIST_VIEW);

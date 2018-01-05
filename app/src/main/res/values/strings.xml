@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">MusicApp</string>
+    <string name="app_name">Music App</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
@@ -16,6 +16,12 @@
     <string name="unknown_title">UNKNOWN TITLE</string>
     <string name="unknown_artist">UNKNOWN ARTIST</string>
     <string name="unknown_album">UNKNOWN ALBUM</string>
+    <string name="unknown_playlist">UNKNOWN PLAYLIST</string>
 
     <string name="start_duration">0:00</string>
+
+    <string name="add_to_playlist">Add to Playlist</string>
+    <string name="choose_a_playlist">Choose a playlist</string>
+    <string name="dialog_positive_button">OK</string>
+    <string name="dialog_negative_button">Cancel</string>
 </resources>

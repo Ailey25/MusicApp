@@ -3,14 +3,14 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <TextView android:id="@+id/artist_name_of_songs"
+    <TextView android:id="@+id/playlist_name_of_songs"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/unknown_artist"
+        android:text="@string/unknown_playlist"
         android:textSize="30sp"
         android:padding="15dp" />
 
-    <ListView android:id="@+id/artist_songs_listview"
+    <ListView android:id="@+id/playlist_songs_listview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

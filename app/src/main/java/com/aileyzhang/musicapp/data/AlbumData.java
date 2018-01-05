@@ -1,4 +1,4 @@
-package com.aileyzhang.musicapp;
+package com.aileyzhang.musicapp.data;
 
 import android.content.Context;
 import android.database.Cursor;

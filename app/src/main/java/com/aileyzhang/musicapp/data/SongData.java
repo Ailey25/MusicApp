@@ -175,4 +175,11 @@ public class SongData {
             if (songCursor != null) songCursor.close();
         }
     }
+
+    public static void deleteSong(Context context, Song song) {
+        Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
+        String selection = MediaStore.Audio.AudioColumns._ID + "=?";
+        String[] selectionArgs = {song.mAudioID};
+        context.getContentResolver().delete(uri, selection, selectionArgs);
+    }
 }

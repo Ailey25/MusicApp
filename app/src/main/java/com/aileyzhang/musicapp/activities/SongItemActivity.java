@@ -7,6 +7,7 @@ import android.media.MediaMetadataRetriever;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -15,6 +16,8 @@ import android.widget.TextView;
 
 import com.aileyzhang.musicapp.AudioController;
 import com.aileyzhang.musicapp.R;
+import com.aileyzhang.musicapp.adapters.SongListAdapter;
+import com.aileyzhang.musicapp.data.Song;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -24,6 +27,12 @@ public class SongItemActivity extends AppCompatActivity implements Runnable {
     private String mTitle;
     private String mArtist;
     private int mDuration;
+    private Song currentSong;
+
+    private ImageView songArtwork;
+    private TextView totalDuration;
+    private TextView songTitle;
+    private TextView artist;
     private Button songItemPlayPauseButton;
     private Handler durationThreadHandler = new Handler();
     private SeekBar durationSeekBar;
@@ -44,7 +53,7 @@ public class SongItemActivity extends AppCompatActivity implements Runnable {
 
     private void setActivityLayout() {
         // Album art
-        ImageView songArtwork = findViewById(R.id.item_song_album_art);
+        songArtwork = findViewById(R.id.item_song_album_art);
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(mPath);
         InputStream inputStream = null;
@@ -78,17 +87,17 @@ public class SongItemActivity extends AppCompatActivity implements Runnable {
 
         // Current and total duration
         currentDuration = findViewById(R.id.item_song_current_duration);
-        TextView totalDuration = findViewById(R.id.item_song_total_duration);
+        totalDuration = findViewById(R.id.item_song_total_duration);
         totalDuration.setText(AudioController.toReadableDuration(mDuration));
 
         // Song title
-        TextView songTitle = findViewById(R.id.item_song_title);
+        songTitle = findViewById(R.id.item_song_title);
         if (mTitle != null && !mTitle.isEmpty()) {
             songTitle.setText(mTitle);
         }
 
         // Song artist
-        TextView artist = findViewById(R.id.item_song_artist);
+        artist = findViewById(R.id.item_song_artist);
         if (mArtist != null && !mArtist.isEmpty()) {
             artist.setText(mArtist);
         }
@@ -99,8 +108,18 @@ public class SongItemActivity extends AppCompatActivity implements Runnable {
         songItemPlayPauseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AudioController.playOrPauseCurrentSong(mPath);
+                AudioController.playOrPauseInSongItem();
                 AudioController.setSongPlayPause(getBaseContext(), songItemPlayPauseButton);
+            }
+        });
+
+        // Next Song
+        Button songItemNextButton = findViewById(R.id.item_song_forward);
+        songItemNextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AudioController.playNext(getBaseContext());
+                updateView();
             }
         });
     }
@@ -113,5 +132,41 @@ public class SongItemActivity extends AppCompatActivity implements Runnable {
             currentDuration.setText(AudioController.toReadableDuration(currentPosition));
         }
         durationThreadHandler.postDelayed(this, 200);
+    }
+
+    private void updateView() {
+        currentSong = AudioController.currentSong;
+
+        MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
+        mediaMetadataRetriever.setDataSource(currentSong.mPath);
+        InputStream inputStream = null;
+        if (mediaMetadataRetriever.getEmbeddedPicture() != null) {
+            inputStream = new ByteArrayInputStream(mediaMetadataRetriever.getEmbeddedPicture());
+        }
+        mediaMetadataRetriever.release();
+        Bitmap art = BitmapFactory.decodeStream(inputStream);
+        if (art != null) {
+            songArtwork.setImageBitmap(art);
+        }
+        totalDuration.setText(AudioController.toReadableDuration(currentSong.mDuration));
+        durationSeekBar.setMax(currentSong.mDuration);
+        currentDuration.setText(AudioController.toReadableDuration(0));
+        durationSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (seekBar != null && fromUser) {
+                    AudioController.mediaPlayer.seekTo(progress);
+                    currentDuration.setText(AudioController.toReadableDuration(progress));
+                }
+            }
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
+        songTitle.setText(currentSong.mTitle);
+        artist.setText(currentSong.mArtist);
     }
 }

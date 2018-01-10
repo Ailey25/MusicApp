@@ -22,10 +22,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.aileyzhang.musicapp.AudioController;
 import com.aileyzhang.musicapp.R;
 import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
+import com.aileyzhang.musicapp.data.Song;
 
 import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.ALBUMS_PAGE_POSITION;
 import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.ARTISTS_PAGE_POSITION;
@@ -147,5 +152,40 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    /**
+     * On activity resume, update bottom song bar with the currently playing song info
+     */
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (AudioController.currentSong != null) updateSongListBottomBadView(AudioController.currentSong);
+    }
+
+    public void updateSongListBottomBadView(final Song curSong) {
+        AudioController.playOrPauseInBottomBar(curSong.mPath);
+
+        // Show the currently playing song
+        (MainActivity.currentSongLayout).setVisibility(View.VISIBLE);
+
+        ImageView artwork = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artwork);
+        TextView title = (MainActivity.currentSongLayout).findViewById(R.id.song_list_title);
+        TextView artist = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artist);
+        final Button songOnBottomBarPlayPauseButton = (MainActivity.currentSongLayout).findViewById(
+                R.id.current_song_play_pause);
+
+        artwork.setImageBitmap(curSong.mArtwork);
+        title.setText(curSong.mTitle);
+        artist.setText(curSong.mArtist);
+
+        AudioController.setSongPlayPause(this, songOnBottomBarPlayPauseButton);
+        songOnBottomBarPlayPauseButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AudioController.playOrPauseInBottomBar(curSong.mPath);
+                AudioController.setSongPlayPause(getApplicationContext(), songOnBottomBarPlayPauseButton);
+            }
+        });
     }
 }

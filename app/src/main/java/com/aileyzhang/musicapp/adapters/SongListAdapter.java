@@ -8,7 +8,6 @@ import android.media.AudioManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.InputType;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,10 +37,13 @@ import java.util.List;
  */
 
 public class SongListAdapter extends ArrayAdapter<Song> {
-    public static Song currentSongOnBottomBar;
+    private Context context;
+
 
     public SongListAdapter(@NonNull Context context, int resource, @NonNull List<Song> objects) {
         super(context, resource, objects);
+        this.context = context;
+        AudioController.setUpSongQueue(context);
     }
 
     @NonNull
@@ -79,15 +81,15 @@ public class SongListAdapter extends ArrayAdapter<Song> {
         songListItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onSongInSongListClick(curSong);
-                currentSongOnBottomBar = curSong;
+                ((MainActivity) context).updateSongListBottomBadView(curSong);
+                AudioController.currentSong = curSong;
             }
         });
 
         (MainActivity.currentSongLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onPersistentCurrentSongClick(view, currentSongOnBottomBar);
+                onPersistentCurrentSongClick(view, AudioController.currentSong);
             }
         });
         return songListItemView;
@@ -136,6 +138,7 @@ public class SongListAdapter extends ArrayAdapter<Song> {
                         SongData.deleteSong(context, song);
                         remove(song);
                         notifyDataSetChanged();
+                        AudioController.setUpSongQueue(context);
                     default:
                         return false;
                 }
@@ -181,30 +184,35 @@ public class SongListAdapter extends ArrayAdapter<Song> {
         builder.create().show();
     }
 
-    private void onSongInSongListClick(final Song curSong) {
-        AudioController.playOrPauseCurrentSong(curSong.mPath);
 
-        // Show the currently playing song
-        (MainActivity.currentSongLayout).setVisibility(View.VISIBLE);
+//    private void updateSongListBottomBadView(final Song curSong) {
+//        AudioController.playOrPauseInBottomBar(curSong.mPath);
+//
+//        // Show the currently playing song
+//        (MainActivity.currentSongLayout).setVisibility(View.VISIBLE);
+//
+//        ImageView artwork = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artwork);
+//        TextView title = (MainActivity.currentSongLayout).findViewById(R.id.song_list_title);
+//        TextView artist = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artist);
+//        final Button songOnBottomBarPlayPauseButton = (MainActivity.currentSongLayout).findViewById(
+//                R.id.current_song_play_pause);
+//
+//        artwork.setImageBitmap(curSong.mArtwork);
+//        title.setText(curSong.mTitle);
+//        artist.setText(curSong.mArtist);
+//
+//        AudioController.setSongPlayPause(getContext(), songOnBottomBarPlayPauseButton);
+//        songOnBottomBarPlayPauseButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                AudioController.playOrPauseInBottomBar(curSong.mPath);
+//                AudioController.setSongPlayPause(getContext(), songOnBottomBarPlayPauseButton);
+//            }
+//        });
+//    }
 
-        ImageView artwork = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artwork);
-        TextView title = (MainActivity.currentSongLayout).findViewById(R.id.song_list_title);
-        TextView artist = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artist);
-        final Button songOnBottomBarPlayPauseButton = (MainActivity.currentSongLayout).findViewById(
-                R.id.current_song_play_pause);
+    public static void onSongItemActivityBackPress(Song curSong) {
 
-        artwork.setImageBitmap(curSong.mArtwork);
-        title.setText(curSong.mTitle);
-        artist.setText(curSong.mArtist);
-
-        AudioController.setSongPlayPause(getContext(), songOnBottomBarPlayPauseButton);
-        songOnBottomBarPlayPauseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AudioController.playOrPauseCurrentSong(curSong.mPath);
-                AudioController.setSongPlayPause(getContext(), songOnBottomBarPlayPauseButton);
-            }
-        });
     }
 
     private void onPersistentCurrentSongClick(View view, Song curSong) {
@@ -214,5 +222,9 @@ public class SongListAdapter extends ArrayAdapter<Song> {
         songItemIntent.putExtra("SONG_ARTIST", curSong.mArtist);
         songItemIntent.putExtra("SONG_DURATION", curSong.mDuration);
         view.getContext().startActivity(songItemIntent);
+    }
+
+    public static void songOnBottomBarDataChange() {
+
     }
 }

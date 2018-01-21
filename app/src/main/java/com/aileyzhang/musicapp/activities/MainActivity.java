@@ -28,6 +28,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aileyzhang.musicapp.AudioController;
+import com.aileyzhang.musicapp.CustomSwipeViewPager;
 import com.aileyzhang.musicapp.R;
 import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
 import com.aileyzhang.musicapp.data.Song;
@@ -43,12 +44,15 @@ public class MainActivity extends AppCompatActivity
 
     private static final int SDCARD_PERMISSION_REQUEST_CODE = 1;
     private MainActivityContentAdapter mMainActivityContentAdapter;
-    private ViewPager mMainViewPager;
+    private CustomSwipeViewPager mMainViewPager;
     public static ViewGroup currentSongLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Check for permission and request it if it's not there
+        getStoragePermission();
+
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -71,9 +75,6 @@ public class MainActivity extends AppCompatActivity
         mMainActivityContentAdapter = new MainActivityContentAdapter(getSupportFragmentManager());
         mMainViewPager.setAdapter(mMainActivityContentAdapter);
         mMainViewPager.setCurrentItem(SONGS_PAGE_POSITION);
-
-        // Check for permission and request it if it's not there
-        getStoragePermission();
     }
 
     public void getStoragePermission() {

@@ -11,6 +11,7 @@ import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.aileyzhang.musicapp.CustomSwipeViewPager;
 import com.aileyzhang.musicapp.data.AlbumData;
 import com.aileyzhang.musicapp.R;
 import com.aileyzhang.musicapp.data.SongData;
@@ -25,7 +26,7 @@ import com.aileyzhang.musicapp.adapters.SongListAdapter;
 public class AlbumsTabFragment extends Fragment implements AlbumGridAdapter.AlbumAdapterListener {
 
     private View view;
-    private ViewPager mAlbumViewPager;
+    private CustomSwipeViewPager mAlbumViewPager;
     private GridView albumGridView;
     private ListView albumSongsListView;
 
@@ -58,5 +59,7 @@ public class AlbumsTabFragment extends Fragment implements AlbumGridAdapter.Albu
         albumSongsListView.setAdapter(new SongListAdapter(getContext(), 0,
                 SongData.getSongsInAlbum(getContext(), albumName)));
         mAlbumViewPager.setCurrentItem(AlbumViewPagerAdapter.ALBUM_SONG_LIST_VIEW);
+
+        mAlbumViewPager.setIsSwipeEnabled(true);
     }
 }

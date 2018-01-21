@@ -8,11 +8,11 @@
     tools:context="com.aileyzhang.musicapp.activities.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <android.support.v4.view.ViewPager
+    <com.aileyzhang.musicapp.CustomSwipeViewPager
         android:id="@+id/main_view_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-    </android.support.v4.view.ViewPager>
+    </com.aileyzhang.musicapp.CustomSwipeViewPager>
 
 </android.support.constraint.ConstraintLayout>

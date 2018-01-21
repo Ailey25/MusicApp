@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.aileyzhang.musicapp.CustomSwipeViewPager;
 import com.aileyzhang.musicapp.data.Playlist;
 import com.aileyzhang.musicapp.data.PlaylistData;
 import com.aileyzhang.musicapp.R;
@@ -25,7 +26,7 @@ import com.aileyzhang.musicapp.adapters.SongListAdapter;
 public class PlaylistsTabFragment extends Fragment implements PlaylistListAdapter.PlaylistAdapterListener {
 
     private View view;
-    private ViewPager mPlaylistViewPager;
+    private CustomSwipeViewPager mPlaylistViewPager;
     private ListView playlistListView;
     private ListView playlistSongsListView;
 
@@ -60,5 +61,7 @@ public class PlaylistsTabFragment extends Fragment implements PlaylistListAdapte
         playlistSongsListView.setAdapter(new SongListAdapter(getContext(), 0,
                 SongData.getSongsInPlaylist(getContext(), playlist.mID)));
         mPlaylistViewPager.setCurrentItem(PlaylistViewPagerAdapter.PLAYLIST_SONG_LIST_VIEW);
+
+        mPlaylistViewPager.setIsSwipeEnabled(true);
     }
 }

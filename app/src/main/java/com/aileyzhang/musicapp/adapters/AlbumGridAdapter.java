@@ -9,8 +9,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.aileyzhang.musicapp.data.Album;
 import com.aileyzhang.musicapp.R;
+import com.aileyzhang.musicapp.data.Album;
 import com.aileyzhang.musicapp.views.AlbumListItemView;
 
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 public class AlbumGridAdapter extends ArrayAdapter<Album> {
 
     public interface AlbumAdapterListener {
-        void onAlbumClicked(String albumName);
+        void onAlbumClicked(Album album);
     }
 
     private AlbumAdapterListener mAlbumAdapterListener;
@@ -38,6 +38,7 @@ public class AlbumGridAdapter extends ArrayAdapter<Album> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        notifyDataSetChanged();
         final Album curAlbum = getItem(position);
         View albumItemView = convertView;
         if (albumItemView == null) {
@@ -72,7 +73,7 @@ public class AlbumGridAdapter extends ArrayAdapter<Album> {
             @Override
             public void onClick(View view) {
                 if (mAlbumAdapterListener != null) {
-                    mAlbumAdapterListener.onAlbumClicked(curAlbum.mAlbumTitle);
+                    mAlbumAdapterListener.onAlbumClicked(curAlbum);
                 }
             }
         });

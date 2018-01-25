@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.aileyzhang.musicapp.AudioController;
 import com.aileyzhang.musicapp.R;
-import com.aileyzhang.musicapp.adapters.SongListAdapter;
 import com.aileyzhang.musicapp.data.Song;
 
 import java.io.ByteArrayInputStream;
@@ -102,6 +101,15 @@ public class SongItemActivity extends AppCompatActivity implements Runnable {
             artist.setText(mArtist);
         }
 
+        // Rewind song / Play previous song
+        Button songItemRewindButton = findViewById(R.id.item_song_rewind);
+        songItemRewindButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AudioController.onPlayRewindClick(getBaseContext());
+            }
+        });
+
         // Play Pause Button
         songItemPlayPauseButton = findViewById(R.id.item_song_play_pause);
         AudioController.setSongPlayPause(getBaseContext(), songItemPlayPauseButton);
@@ -118,7 +126,7 @@ public class SongItemActivity extends AppCompatActivity implements Runnable {
         songItemNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AudioController.playNext(getBaseContext());
+                AudioController.onPlayNextClick(getBaseContext());
                 updateView();
             }
         });
@@ -136,6 +144,7 @@ public class SongItemActivity extends AppCompatActivity implements Runnable {
 
     private void updateView() {
         currentSong = AudioController.currentSong;
+        Log.e("DEBUG", "progress: " + AudioController.toReadableDuration(0));
 
         MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
         mediaMetadataRetriever.setDataSource(currentSong.mPath);

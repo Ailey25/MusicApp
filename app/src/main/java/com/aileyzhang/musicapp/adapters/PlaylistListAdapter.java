@@ -8,8 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import com.aileyzhang.musicapp.data.Playlist;
 import com.aileyzhang.musicapp.R;
+import com.aileyzhang.musicapp.data.Playlist;
 import com.aileyzhang.musicapp.views.PlaylistListItemView;
 
 import java.util.List;
@@ -36,6 +36,7 @@ public class PlaylistListAdapter extends ArrayAdapter<Playlist> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        notifyDataSetChanged();
         View playlistListView = convertView;
         if (playlistListView == null) {
             playlistListView = new PlaylistListItemView(getContext());

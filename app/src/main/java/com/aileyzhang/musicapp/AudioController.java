@@ -5,6 +5,7 @@ import android.media.MediaPlayer;
 import android.util.Log;
 import android.widget.Button;
 
+import com.aileyzhang.musicapp.data.Playlist;
 import com.aileyzhang.musicapp.data.Song;
 import com.aileyzhang.musicapp.data.SongData;
 
@@ -23,35 +24,60 @@ public class AudioController {
     public static Song currentSong;
     public static ArrayList<Song> currentSongQueue = new ArrayList<>();
 
+
     /**
-     * If null, create a shuffled queue. If queue already exists, remove deleted songs
+     * Overwrite currentSongQueue with shuffled songs in database or playlist
+     */
+    public static void setCurrentSongQueue(Context context) {
+        currentSongQueue = SongData.getAllSongs(context);
+        Collections.shuffle(currentSongQueue);
+    }
+
+    public static void setCurrentSongQueue(Context context, String playlistID) {
+        currentSongQueue = SongData.getSongsInPlaylist(context, playlistID);
+        Collections.shuffle(currentSongQueue);
+    }
+
+    /**
+     * Remove deleted songs from currentSongQueue by comparing it to the most recent songs
+     * in database or in the playlist
      * @param context
      */
-    public static void setUpSongQueue(Context context) {
-        // Only shuffle for now
-        if (currentSongQueue == null || currentSongQueue.size() == 0) {
-            currentSongQueue = SongData.getAllSongs(context);
-            Collections.shuffle(currentSongQueue);
-        } else {
-            // temp stores the most updated songs in library
-            ArrayList<Song> temp = SongData.getAllSongs(context);
-            Iterator<Song> it = currentSongQueue.iterator();
-            for (int i = 0; i < currentSongQueue.size(); i++) {
-                if (!temp.contains(currentSongQueue.get(i))) {
-                    currentSongQueue.remove(i);
-                }
-            }
-        }
+    public static void updateCurrentSongQueue(Context context) {
+        ArrayList<Song> mostRecentSongs = SongData.getAllSongs(context);
+        currentSongQueue.retainAll(mostRecentSongs);
+    }
+
+    public static void updateCurrentSongQueue(Context context, String playlistID) {
+        ArrayList<Song> mostRecentSongs = SongData.getSongsInPlaylist(context, playlistID);
+        currentSongQueue.retainAll(mostRecentSongs);
+        // TODO: remove checks
+//        for (Song s: mostRecentSongs) {
+//            Log.e("DEBUG","recent array: " + s.mTitle);
+//        }
+//        for (Song s: AudioController.currentSongQueue) {
+//            Log.e("DEBUG","new currentSongQueue: " + s.mTitle);
+//        }
+    }
+
+    /**
+     * Play song from beginning
+     * @param context
+     */
+    public static void onPlayRewindClick(Context context) {
+        Log.e("DEBUG", "" + mediaPlayer.getCurrentPosition());
+        mediaPlayer.seekTo(0);
     }
 
     /**
      * Plays next song. If currently playing last song, create new shuffled queue and start playing.
      */
-    public static void playNext(Context context) {
+    public static void onPlayNextClick(Context context) {
 //        Log.e("DEBUGMODE", "Queue ");
 //        for (Song s: currentSongQueue) {
 //            Log.e("DEBUGMODE", s.mTitle);
 //        }
+        mediaPlayer.seekTo(0);
         Boolean isLastSong = false;
         int curSongInd = currentSongQueue.indexOf(currentSong);
         if (curSongInd == currentSongQueue.size() - 1) {

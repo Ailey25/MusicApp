@@ -25,7 +25,7 @@ public class PlaylistViewPagerAdapter extends PagerAdapter {
             case PLAYLIST_SONG_LIST_VIEW:
                 return container.findViewById(R.id.playlist_songs_list_page);
             default:
-                return null;
+                return 0;
         }
     }
 

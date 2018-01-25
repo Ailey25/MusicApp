@@ -3,7 +3,6 @@ package com.aileyzhang.musicapp.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +10,13 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aileyzhang.musicapp.CustomSwipeViewPager;
-import com.aileyzhang.musicapp.data.Playlist;
-import com.aileyzhang.musicapp.data.PlaylistData;
 import com.aileyzhang.musicapp.R;
-import com.aileyzhang.musicapp.data.SongData;
 import com.aileyzhang.musicapp.adapters.PlaylistListAdapter;
 import com.aileyzhang.musicapp.adapters.PlaylistViewPagerAdapter;
 import com.aileyzhang.musicapp.adapters.SongListAdapter;
+import com.aileyzhang.musicapp.data.Playlist;
+import com.aileyzhang.musicapp.data.PlaylistData;
+import com.aileyzhang.musicapp.data.SongData;
 
 /**
  * Created by Ailey on 2018-01-03.
@@ -58,10 +57,12 @@ public class PlaylistsTabFragment extends Fragment implements PlaylistListAdapte
         TextView tv = view.findViewById(R.id.playlist_name_of_songs);
         tv.setText(playlist.mName);
 
-        playlistSongsListView.setAdapter(new SongListAdapter(getContext(), 0,
-                SongData.getSongsInPlaylist(getContext(), playlist.mID)));
-        mPlaylistViewPager.setCurrentItem(PlaylistViewPagerAdapter.PLAYLIST_SONG_LIST_VIEW);
+        SongListAdapter playlistSongListAdapter = new SongListAdapter(getContext(), 0,
+                SongData.getSongsInPlaylist(getContext(), playlist.mID));
+        playlistSongListAdapter.setParentTabFragment("Playlists", playlist);
+        playlistSongsListView.setAdapter(playlistSongListAdapter);
 
+        mPlaylistViewPager.setCurrentItem(PlaylistViewPagerAdapter.PLAYLIST_SONG_LIST_VIEW);
         mPlaylistViewPager.setIsSwipeEnabled(true);
     }
 }

@@ -1,30 +1,22 @@
 package com.aileyzhang.musicapp.activities;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.aileyzhang.musicapp.AudioController;
@@ -50,8 +42,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Check for permission and request it if it's not there
-        getStoragePermission();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -72,18 +62,25 @@ public class MainActivity extends AppCompatActivity
 
         // Initialize ViewPager
         mMainViewPager = findViewById(R.id.main_view_pager);
+        mMainViewPager.setOffscreenPageLimit(3);
         mMainActivityContentAdapter = new MainActivityContentAdapter(getSupportFragmentManager());
-        mMainViewPager.setAdapter(mMainActivityContentAdapter);
-        mMainViewPager.setCurrentItem(SONGS_PAGE_POSITION);
+
+        // Check for permission and request it if it's not there
+        if (getStoragePermission()) {
+            mMainViewPager.setAdapter(mMainActivityContentAdapter);
+            mMainViewPager.setCurrentItem(SONGS_PAGE_POSITION);
+        }
     }
 
-    public void getStoragePermission() {
+    public Boolean getStoragePermission() {
         Boolean hasPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         if (!hasPermission) {
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, SDCARD_PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    SDCARD_PERMISSION_REQUEST_CODE);
         }
+        return hasPermission;
     }
 
     @Override
@@ -92,6 +89,8 @@ public class MainActivity extends AppCompatActivity
             case SDCARD_PERMISSION_REQUEST_CODE:
                 if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted
+                    mMainViewPager.setAdapter(mMainActivityContentAdapter);
+                    mMainViewPager.setCurrentItem(SONGS_PAGE_POSITION);
                 } else {
                     // Permission denied
                 }

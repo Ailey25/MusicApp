@@ -3,7 +3,6 @@ package com.aileyzhang.musicapp.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +10,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.aileyzhang.musicapp.CustomSwipeViewPager;
-import com.aileyzhang.musicapp.data.ArtistData;
 import com.aileyzhang.musicapp.R;
-import com.aileyzhang.musicapp.data.SongData;
 import com.aileyzhang.musicapp.adapters.ArtistListAdapter;
 import com.aileyzhang.musicapp.adapters.ArtistViewPagerAdapter;
 import com.aileyzhang.musicapp.adapters.SongListAdapter;
+import com.aileyzhang.musicapp.data.ArtistData;
+import com.aileyzhang.musicapp.data.SongData;
 
 /**
  * Created by Ailey on 2017-12-23.
@@ -57,10 +56,12 @@ public class ArtistsTabFragment extends Fragment implements ArtistListAdapter.Ar
         TextView tv = view.findViewById(R.id.artist_name_of_songs);
         tv.setText(artistName);
 
-        artistSongsListView.setAdapter(new SongListAdapter(getContext(), 0,
-                SongData.getSongsInArtist(getContext(), artistName)));
-        mArtistViewPager.setCurrentItem(ArtistViewPagerAdapter.ARTIST_SONG_LIST_VIEW);
+        SongListAdapter artistSongListAdapter = new SongListAdapter(getContext(), 0,
+                SongData.getSongsInArtist(getContext(), artistName));
+        artistSongListAdapter.setParentTabFragment("Artists");
+        artistSongsListView.setAdapter(artistSongListAdapter);
 
+        mArtistViewPager.setCurrentItem(ArtistViewPagerAdapter.ARTIST_SONG_LIST_VIEW);
         mArtistViewPager.setIsSwipeEnabled(true);
     }
 }

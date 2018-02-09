@@ -49,6 +49,10 @@ public class SongListAdapter extends ArrayAdapter<Song> {
         this.context = context;
     }
 
+    public Playlist getPlaylist() {
+        return mPlaylist;
+    }
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {

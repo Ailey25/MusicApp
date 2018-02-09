@@ -28,6 +28,7 @@ public class PlaylistsTabFragment extends Fragment implements PlaylistListAdapte
     private CustomSwipeViewPager mPlaylistViewPager;
     private ListView playlistListView;
     private ListView playlistSongsListView;
+    public SongListAdapter playlistSongListAdapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,12 +58,21 @@ public class PlaylistsTabFragment extends Fragment implements PlaylistListAdapte
         TextView tv = view.findViewById(R.id.playlist_name_of_songs);
         tv.setText(playlist.mName);
 
-        SongListAdapter playlistSongListAdapter = new SongListAdapter(getContext(), 0,
+        playlistSongListAdapter = new SongListAdapter(getContext(), 0,
                 SongData.getSongsInPlaylist(getContext(), playlist.mID));
         playlistSongListAdapter.setParentTabFragment("Playlists", playlist);
         playlistSongsListView.setAdapter(playlistSongListAdapter);
 
         mPlaylistViewPager.setCurrentItem(PlaylistViewPagerAdapter.PLAYLIST_SONG_LIST_VIEW);
         mPlaylistViewPager.setIsSwipeEnabled(true);
+    }
+
+    public void updateSongsInPlaylist(Playlist playlist) {
+        if (playlistSongListAdapter != null) {
+            playlistSongListAdapter = new SongListAdapter(getContext(), 0,
+                    SongData.getSongsInPlaylist(getContext(), playlist.mID));
+            playlistSongListAdapter.setParentTabFragment("Playlists", playlist);
+            playlistSongsListView.setAdapter(playlistSongListAdapter);
+        }
     }
 }

@@ -20,6 +20,7 @@ public class MainActivityContentAdapter extends FragmentPagerAdapter {
     public static final int ARTISTS_PAGE_POSITION = 1;
     public static final int ALBUMS_PAGE_POSITION = 2;
     public static final int PLAYLISTS_PAGE_POSITION = 3;
+    public PlaylistsTabFragment playlistsTabFragment;
 
     public MainActivityContentAdapter(FragmentManager fm) {
         super(fm);
@@ -35,7 +36,8 @@ public class MainActivityContentAdapter extends FragmentPagerAdapter {
             case ALBUMS_PAGE_POSITION:
                 return new AlbumsTabFragment();
             case PLAYLISTS_PAGE_POSITION:
-                return new PlaylistsTabFragment();
+                playlistsTabFragment = new PlaylistsTabFragment();
+                return playlistsTabFragment;
             default:
                 return null;
         }

@@ -23,7 +23,9 @@ import com.aileyzhang.musicapp.AudioController;
 import com.aileyzhang.musicapp.CustomSwipeViewPager;
 import com.aileyzhang.musicapp.R;
 import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
+import com.aileyzhang.musicapp.data.Playlist;
 import com.aileyzhang.musicapp.data.Song;
+import com.aileyzhang.musicapp.fragments.PlaylistsTabFragment;
 
 import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.ALBUMS_PAGE_POSITION;
 import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.ARTISTS_PAGE_POSITION;
@@ -142,6 +144,11 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_albums) {
             mMainViewPager.setCurrentItem(ALBUMS_PAGE_POSITION);
         } else if (id == R.id.nav_playlists) {
+            PlaylistsTabFragment playlistsTabFragment = mMainActivityContentAdapter.playlistsTabFragment;
+            if (playlistsTabFragment.playlistSongListAdapter != null) {
+                Playlist playlist = playlistsTabFragment.playlistSongListAdapter.getPlaylist();
+                playlistsTabFragment.updateSongsInPlaylist(playlist);
+            }
             mMainViewPager.setCurrentItem(PLAYLISTS_PAGE_POSITION);
         } else if (id == R.id.nav_settings) {
 

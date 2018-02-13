@@ -43,7 +43,7 @@ public class PlaylistsTabFragment extends Fragment implements PlaylistListAdapte
         mPlaylistViewPager = view.findViewById(R.id.playlist_view_pager);
         playlistListView = view.findViewById(R.id.playlist_list_view);
         playlistSongsListView = view.findViewById(R.id.playlist_songs_listview);
-        
+
         updatePlaylistList();
 
         mPlaylistViewPager.setAdapter(new PlaylistViewPagerAdapter());
@@ -62,15 +62,20 @@ public class PlaylistsTabFragment extends Fragment implements PlaylistListAdapte
         mPlaylistViewPager.setIsSwipeEnabled(true);
     }
 
+    /**
+     * Updates songs in a playlist to be all songs from that playlist
+     * @param playlist
+     */
     public void updateSongsInPlaylist(Playlist playlist) {
-        if (playlistSongListAdapter != null) {
-            playlistSongListAdapter = new SongListAdapter(getContext(), 0,
-                    SongData.getSongsInPlaylist(getContext(), playlist.mID));
-            playlistSongListAdapter.setParentTabFragment("Playlists", playlist);
-            playlistSongsListView.setAdapter(playlistSongListAdapter);
-        }
+        playlistSongListAdapter = new SongListAdapter(getContext(), 0,
+                SongData.getSongsInPlaylist(getContext(), playlist.mID));
+        playlistSongListAdapter.setParentTabFragment("Playlists", playlist);
+        playlistSongsListView.setAdapter(playlistSongListAdapter);
     }
 
+    /**
+     * Updates playlist list to be all playlists in database
+     */
     public void updatePlaylistList() {
         playlistListAdapter = new PlaylistListAdapter(getContext(), 0,
                 PlaylistData.getAllPlaylist(getContext()));

@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupMenu;
@@ -89,12 +90,25 @@ public class SongListAdapter extends ArrayAdapter<Song> {
         songListItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) context).updateSongListBottomBadView(curSong);
+                // Set play to pause and pause to play correctly when song in song list is clicked
+                AudioController.playOrPauseInBottomBar(curSong.mPath);
+                AudioController.setSongPlayPause(getContext(), AudioController.songOnBottomBarPlayPauseButton);
+                // Clicked on play/pause of song on the bottom of the screen
+                AudioController.songOnBottomBarPlayPauseButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AudioController.playOrPauseInBottomBar(AudioController.currentSong.mPath);
+                        AudioController.setSongPlayPause(getContext(), AudioController.songOnBottomBarPlayPauseButton);
+                    }
+                });
+                // Update view
+                AudioController.updateSongListBottomBarView(curSong);
+
                 AudioController.currentSong = curSong;
                 if (mPlaylist == null) {
-                    AudioController.setCurrentSongQueue(getContext());
+                    AudioController.setCurrentSongQueue(getContext(), curSong);
                 } else {
-                    AudioController.setCurrentSongQueue(getContext(), mPlaylist.mID);
+                    AudioController.setCurrentSongQueue(getContext(), curSong, mPlaylist.mID);
                 }
             }
         });
@@ -104,6 +118,16 @@ public class SongListAdapter extends ArrayAdapter<Song> {
             @Override
             public void onClick(View view) {
                 onPersistentCurrentSongClick(view, AudioController.currentSong);
+            }
+        });
+
+        // Clicked on the next button of song on the bottom of the screen
+        Button bottomBarPlayNext = (MainActivity.currentSongLayout).findViewById(R.id.current_song_forward);
+        bottomBarPlayNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AudioController.onPlayNextClick(getContext());
+                AudioController.updateSongListBottomBarView(AudioController.currentSong);
             }
         });
 

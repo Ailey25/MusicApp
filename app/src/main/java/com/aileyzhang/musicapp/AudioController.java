@@ -2,8 +2,12 @@ package com.aileyzhang.musicapp;
 
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import com.aileyzhang.musicapp.activities.MainActivity;
 import com.aileyzhang.musicapp.data.Song;
 import com.aileyzhang.musicapp.data.SongData;
 
@@ -20,19 +24,24 @@ public class AudioController {
     public static MediaPlayer mediaPlayer = new MediaPlayer();
     public static Song currentSong;
     public static ArrayList<Song> currentSongQueue = new ArrayList<>();
+    public static Button songOnBottomBarPlayPauseButton;
 
 
     /**
      * Overwrite currentSongQueue with shuffled songs in database or playlist
      */
-    public static void setCurrentSongQueue(Context context) {
+    public static void setCurrentSongQueue(Context context, Song curSong) {
         currentSongQueue = SongData.getAllSongs(context);
         Collections.shuffle(currentSongQueue);
+        currentSongQueue.remove(curSong);
+        currentSongQueue.add(0, curSong);
     }
 
-    public static void setCurrentSongQueue(Context context, String playlistID) {
+    public static void setCurrentSongQueue(Context context, Song curSong, String playlistID) {
         currentSongQueue = SongData.getSongsInPlaylist(context, playlistID);
         Collections.shuffle(currentSongQueue);
+        currentSongQueue.remove(curSong);
+        currentSongQueue.add(0, curSong);
     }
 
     /**
@@ -48,7 +57,7 @@ public class AudioController {
     public static void updateCurrentSongQueue(Context context, String playlistID) {
         ArrayList<Song> mostRecentSongs = SongData.getSongsInPlaylist(context, playlistID);
         currentSongQueue.retainAll(mostRecentSongs);
-        // TODO: remove checks
+//        TODO: remove checks
 //        for (Song s: mostRecentSongs) {
 //            Log.e("DEBUG","recent array: " + s.mTitle);
 //        }
@@ -69,9 +78,9 @@ public class AudioController {
      * Plays next song. If currently playing last song, create new shuffled queue and start playing.
      */
     public static void onPlayNextClick(Context context) {
-//        Log.e("DEBUGMODE", "Queue ");
+//        Log.e("QUEUE", "Current queue. Prev song: " + currentSong.mTitle);
 //        for (Song s: currentSongQueue) {
-//            Log.e("DEBUGMODE", s.mTitle);
+//            Log.e("QUEUE", s.mTitle);
 //        }
         mediaPlayer.seekTo(0);
         Boolean isLastSong = false;
@@ -172,5 +181,22 @@ public class AudioController {
         long seconds = TimeUnit.MILLISECONDS.toSeconds(duration) -
                 TimeUnit.MINUTES.toSeconds(TimeUnit.MILLISECONDS.toMinutes(duration));
         return String.format(Locale.getDefault(), "%02d:%02d", minutes, seconds);
+    }
+
+    /**
+     * Update the bottom bar view to be the correct song playing
+     * @param curSong
+     */
+    public static void updateSongListBottomBarView(final Song curSong) {
+        // Show the currently playing song
+        (MainActivity.currentSongLayout).setVisibility(View.VISIBLE);
+
+        ImageView artwork = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artwork);
+        TextView title = (MainActivity.currentSongLayout).findViewById(R.id.song_list_title);
+        TextView artist = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artist);
+
+        artwork.setImageBitmap(curSong.mArtwork);
+        title.setText(curSong.mTitle);
+        artist.setText(curSong.mArtist);
     }
 }

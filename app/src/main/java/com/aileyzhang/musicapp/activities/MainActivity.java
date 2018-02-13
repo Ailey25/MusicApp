@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity
             mMainViewPager.setCurrentItem(ALBUMS_PAGE_POSITION);
         } else if (id == R.id.nav_playlists) {
             PlaylistsTabFragment playlistsTabFragment = mMainActivityContentAdapter.playlistsTabFragment;
+            playlistsTabFragment.updatePlaylistList();
             if (playlistsTabFragment.playlistSongListAdapter != null) {
                 Playlist playlist = playlistsTabFragment.playlistSongListAdapter.getPlaylist();
                 playlistsTabFragment.updateSongsInPlaylist(playlist);

@@ -28,6 +28,7 @@ public class PlaylistsTabFragment extends Fragment implements PlaylistListAdapte
     private CustomSwipeViewPager mPlaylistViewPager;
     private ListView playlistListView;
     private ListView playlistSongsListView;
+    public PlaylistListAdapter playlistListAdapter;
     public SongListAdapter playlistSongListAdapter;
 
     @Override
@@ -42,11 +43,8 @@ public class PlaylistsTabFragment extends Fragment implements PlaylistListAdapte
         mPlaylistViewPager = view.findViewById(R.id.playlist_view_pager);
         playlistListView = view.findViewById(R.id.playlist_list_view);
         playlistSongsListView = view.findViewById(R.id.playlist_songs_listview);
-
-        PlaylistListAdapter playlistListAdapter = new PlaylistListAdapter(getContext(), 0,
-                PlaylistData.getAllPlaylist(getContext()));
-        playlistListAdapter.setListener(this);
-        playlistListView.setAdapter(playlistListAdapter);
+        
+        updatePlaylistList();
 
         mPlaylistViewPager.setAdapter(new PlaylistViewPagerAdapter());
         mPlaylistViewPager.setCurrentItem(PlaylistViewPagerAdapter.PLAYLIST_LIST_VIEW);
@@ -58,10 +56,7 @@ public class PlaylistsTabFragment extends Fragment implements PlaylistListAdapte
         TextView tv = view.findViewById(R.id.playlist_name_of_songs);
         tv.setText(playlist.mName);
 
-        playlistSongListAdapter = new SongListAdapter(getContext(), 0,
-                SongData.getSongsInPlaylist(getContext(), playlist.mID));
-        playlistSongListAdapter.setParentTabFragment("Playlists", playlist);
-        playlistSongsListView.setAdapter(playlistSongListAdapter);
+        updateSongsInPlaylist(playlist);
 
         mPlaylistViewPager.setCurrentItem(PlaylistViewPagerAdapter.PLAYLIST_SONG_LIST_VIEW);
         mPlaylistViewPager.setIsSwipeEnabled(true);
@@ -74,5 +69,12 @@ public class PlaylistsTabFragment extends Fragment implements PlaylistListAdapte
             playlistSongListAdapter.setParentTabFragment("Playlists", playlist);
             playlistSongsListView.setAdapter(playlistSongListAdapter);
         }
+    }
+
+    public void updatePlaylistList() {
+        playlistListAdapter = new PlaylistListAdapter(getContext(), 0,
+                PlaylistData.getAllPlaylist(getContext()));
+        playlistListAdapter.setListener(this);
+        playlistListView.setAdapter(playlistListAdapter);
     }
 }

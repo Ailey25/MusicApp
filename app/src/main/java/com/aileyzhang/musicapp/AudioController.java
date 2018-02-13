@@ -2,16 +2,13 @@ package com.aileyzhang.musicapp;
 
 import android.content.Context;
 import android.media.MediaPlayer;
-import android.util.Log;
 import android.widget.Button;
 
-import com.aileyzhang.musicapp.data.Playlist;
 import com.aileyzhang.musicapp.data.Song;
 import com.aileyzhang.musicapp.data.SongData;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Iterator;
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
@@ -65,7 +62,6 @@ public class AudioController {
      * @param context
      */
     public static void onPlayRewindClick(Context context) {
-        Log.e("DEBUG", "" + mediaPlayer.getCurrentPosition());
         mediaPlayer.seekTo(0);
     }
 

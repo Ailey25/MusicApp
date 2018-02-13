@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private MainActivityContentAdapter mMainActivityContentAdapter;
     private CustomSwipeViewPager mMainViewPager;
     public static ViewGroup currentSongLayout;
+    public Button songOnBottomBarPlayPauseButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +60,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_songs);
 
-        // Initialize Current song layout
+        // Initialize Current song layout and button on bottom bar
         currentSongLayout = findViewById(R.id.current_song_layout);
+        songOnBottomBarPlayPauseButton = (MainActivity.currentSongLayout).findViewById(
+                R.id.current_song_play_pause);
 
         // Initialize ViewPager
         mMainViewPager = findViewById(R.id.main_view_pager);
@@ -168,7 +171,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (AudioController.currentSong != null) updateSongListBottomBadView(AudioController.currentSong);
+        if (AudioController.currentSong != null) {
+            AudioController.setSongPlayPause(this,songOnBottomBarPlayPauseButton);
+        }
     }
 
     public void updateSongListBottomBadView(final Song curSong) {
@@ -180,8 +185,6 @@ public class MainActivity extends AppCompatActivity
         ImageView artwork = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artwork);
         TextView title = (MainActivity.currentSongLayout).findViewById(R.id.song_list_title);
         TextView artist = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artist);
-        final Button songOnBottomBarPlayPauseButton = (MainActivity.currentSongLayout).findViewById(
-                R.id.current_song_play_pause);
 
         artwork.setImageBitmap(curSong.mArtwork);
         title.setText(curSong.mTitle);

@@ -8,7 +8,6 @@ import android.media.AudioManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.text.InputType;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -143,13 +142,13 @@ public class SongListAdapter extends ArrayAdapter<Song> {
         } else if (mParentTabFragment.equals("Playlists")) {
             popupMenu.getMenu().findItem(R.id.delete_from_playlist).setVisible(true);
         }
-        //TODO: remove checks
-        for (Song s: SongData.getAllSongs(context)) {
-            Log.e("DEBUG", "db before: " + s.mTitle);
-        }
-        for (Song s: AudioController.currentSongQueue) {
-            Log.e("DEBUG","song queue before: " + s.mTitle);
-        }
+//        TODO: remove checks
+//        for (Song s: SongData.getAllSongs(context)) {
+//            Log.e("DEBUG", "db before: " + s.mTitle);
+//        }
+//        for (Song s: AudioController.currentSongQueue) {
+//            Log.e("DEBUG","song queue before: " + s.mTitle);
+//        }
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
@@ -177,12 +176,12 @@ public class SongListAdapter extends ArrayAdapter<Song> {
                         return true;
                     case R.id.delete_song:
                         deleteSongFromDatabase(song);
-                        for (Song s: SongData.getAllSongs(context)) {
-                            Log.e("DEBUG","db deleted song: " + s.mTitle);
-                        }
-                        for (Song s: AudioController.currentSongQueue) {
-                            Log.e("DEBUG","song queue delete song: " + s.mTitle);
-                        }
+//                        for (Song s: SongData.getAllSongs(context)) {
+//                            Log.e("DEBUG","db deleted song: " + s.mTitle);
+//                        }
+//                        for (Song s: AudioController.currentSongQueue) {
+//                            Log.e("DEBUG","song queue delete song: " + s.mTitle);
+//                        }
                         return true;
                     default:
                         return false;

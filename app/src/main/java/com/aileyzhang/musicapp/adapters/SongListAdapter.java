@@ -23,6 +23,8 @@ import com.aileyzhang.musicapp.AudioController;
 import com.aileyzhang.musicapp.R;
 import com.aileyzhang.musicapp.activities.MainActivity;
 import com.aileyzhang.musicapp.activities.SongItemActivity;
+import com.aileyzhang.musicapp.data.Album;
+import com.aileyzhang.musicapp.data.Artist;
 import com.aileyzhang.musicapp.data.Playlist;
 import com.aileyzhang.musicapp.data.PlaylistData;
 import com.aileyzhang.musicapp.data.Song;
@@ -38,12 +40,17 @@ import java.util.List;
 
 public class SongListAdapter extends ArrayAdapter<Song> {
     private Context context;
+    private String mParentTabFragment;
+    private Playlist mPlaylist;
 
 
     public SongListAdapter(@NonNull Context context, int resource, @NonNull List<Song> objects) {
         super(context, resource, objects);
         this.context = context;
-        AudioController.setUpSongQueue(context);
+    }
+
+    public Playlist getPlaylist() {
+        return mPlaylist;
     }
 
     @NonNull
@@ -69,6 +76,7 @@ public class SongListAdapter extends ArrayAdapter<Song> {
             artist.setText(curSong.mArtist);
         }
 
+        // Clicked on more option menu of a song
         final ImageView moreOption = songListItemView.findViewById(R.id.song_list_more_option);
         moreOption.setVisibility(View.VISIBLE);
         moreOption.setOnClickListener(new View.OnClickListener() {
@@ -78,73 +86,183 @@ public class SongListAdapter extends ArrayAdapter<Song> {
             }
         });
 
+        // Clicked on a song in a list of songs
         songListItemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                ((MainActivity) context).updateSongListBottomBadView(curSong);
+                // Set play to pause and pause to play correctly when song in song list is clicked
+                AudioController.playOrPauseInBottomBar(curSong.mPath);
+                AudioController.setSongPlayPause(getContext(), AudioController.songOnBottomBarPlayPauseButton);
+                // Clicked on play/pause of song on the bottom of the screen
+                AudioController.songOnBottomBarPlayPauseButton.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        AudioController.playOrPauseInBottomBar(AudioController.currentSong.mPath);
+                        AudioController.setSongPlayPause(getContext(), AudioController.songOnBottomBarPlayPauseButton);
+                    }
+                });
+                // Update view
+                AudioController.updateSongListBottomBarView(curSong);
+
                 AudioController.currentSong = curSong;
+                if (mPlaylist == null) {
+                    AudioController.setCurrentSongQueue(getContext(), curSong);
+                } else {
+                    AudioController.setCurrentSongQueue(getContext(), curSong, mPlaylist.mID);
+                }
             }
         });
 
+        // Clicked on the song on the bottom of the screen
         (MainActivity.currentSongLayout).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 onPersistentCurrentSongClick(view, AudioController.currentSong);
             }
         });
+
+        // Clicked on the next button of song on the bottom of the screen
+        Button bottomBarPlayNext = (MainActivity.currentSongLayout).findViewById(R.id.current_song_forward);
+        bottomBarPlayNext.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AudioController.onPlayNextClick(getContext());
+                AudioController.updateSongListBottomBarView(AudioController.currentSong);
+            }
+        });
+
         return songListItemView;
+    }
+
+    public void setParentTabFragment(String tabFragmentName) {
+        mParentTabFragment = tabFragmentName;
+    }
+
+    public void setParentTabFragment(String tabFragmentName, Artist artist) {
+        mParentTabFragment = tabFragmentName;
+    }
+
+    public void setParentTabFragment(String tabFragmentName, Album album) {
+        mParentTabFragment = tabFragmentName;
+    }
+
+    public void setParentTabFragment(String tabFragmentName, Playlist playlist) {
+        mParentTabFragment = tabFragmentName;
+        mPlaylist = playlist;
     }
 
     private void onSongMoreOptionClick(final Context context, View moreOption, final Song song) {
         PopupMenu popupMenu = new PopupMenu(context, moreOption);
         popupMenu.getMenuInflater().inflate(R.menu.song_item_more_option, popupMenu.getMenu());
+        if (mParentTabFragment.equals("Songs")) {
+            popupMenu.getMenu().findItem(R.id.add_to_playlist).setVisible(true);
+            popupMenu.getMenu().findItem(R.id.delete_song).setVisible(true);
+        } else if (mParentTabFragment.equals("Artists")) {
+            popupMenu.getMenu().findItem(R.id.add_to_playlist).setVisible(true);
+            popupMenu.getMenu().findItem(R.id.delete_song).setVisible(true);
+        } else if (mParentTabFragment.equals("Albums")) {
+            popupMenu.getMenu().findItem(R.id.add_to_playlist).setVisible(true);
+            popupMenu.getMenu().findItem(R.id.delete_song).setVisible(true);
+        } else if (mParentTabFragment.equals("Playlists")) {
+            popupMenu.getMenu().findItem(R.id.delete_from_playlist).setVisible(true);
+        }
+//        TODO: remove checks
+//        for (Song s: SongData.getAllSongs(context)) {
+//            Log.e("DEBUG", "db before: " + s.mTitle);
+//        }
+//        for (Song s: AudioController.currentSongQueue) {
+//            Log.e("DEBUG","song queue before: " + s.mTitle);
+//        }
         popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
             @Override
             public boolean onMenuItemClick(MenuItem menuItem) {
                 switch (menuItem.getItemId()) {
                     case R.id.add_to_playlist:
-                        AlertDialog.Builder pickPlaylistBuilder = new AlertDialog.Builder(getContext());
-                        final ArrayList<Playlist> playlists = PlaylistData.getAllPlaylist(context);
-                        ArrayList<String> existentPlaylistNames = new ArrayList<>();
-                        existentPlaylistNames.add("Create new playlist");
-                        for (Playlist playlist: playlists) {
-                            existentPlaylistNames.add(playlist.mName);
-                        }
-                        CharSequence[] playlistNames = existentPlaylistNames.toArray(new CharSequence[existentPlaylistNames.size()]);
-                        pickPlaylistBuilder.setTitle(R.string.choose_a_playlist)
-                                .setItems(playlistNames, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int which) {
-                                        if (which == 0) { // Create new playlist
-                                            newPlaylist(context, song);
-                                        } else {
-                                            // Add song to playlist
-                                            Long playlistID = Long.parseLong(playlists.get(which - 1).mID);
-                                            long audioID = Long.parseLong(song.mAudioID);
-                                            PlaylistData.addSongToPlaylist(context, playlistID, audioID);
-                                        }
-                                    }
-                                })
-                                .setNegativeButton(R.string.dialog_negative_button, new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialogInterface, int i) {
-                                        // Pressed cancel
-                                    }
-                                });
-                        pickPlaylistBuilder.create().show();
+                        addToPlaylist(song);
+//                        for (Song s: SongData.getAllSongs(context)) {
+//                            Log.e("DEBUG","db add to playlist: " + s.mTitle);
+//                        }
+//                        for (Song s: AudioController.currentSongQueue) {
+//                            Log.e("DEBUG","song queue add to playlist: " + s.mTitle);
+//                        }
+                        return true;
+                    case R.id.delete_from_playlist:
+//                        for (Song s: SongData.getSongsInPlaylist(context, mPlaylist.mID)) {
+//                            Log.e("DEBUG","playlist before" + s.mTitle);
+//                        }
+                        deleteSongFromPlaylist(song, mPlaylist);
+//                        for (Song s: SongData.getSongsInPlaylist(context, mPlaylist.mID)) {
+//                            Log.e("DEBUG","playlist after" + s.mTitle);
+//                        }
+//                        for (Song s: SongData.getAllSongs(context)) {
+//                            Log.e("DEBUG","db deleted from playlist " + s.mTitle);
+//                        }
                         return true;
                     case R.id.delete_song:
-                        Toast.makeText(context, song.mTitle + " deleted", Toast.LENGTH_SHORT).show();
-                        SongData.deleteSong(context, song);
-                        remove(song);
-                        notifyDataSetChanged();
-                        AudioController.setUpSongQueue(context);
+                        deleteSongFromDatabase(song);
+//                        for (Song s: SongData.getAllSongs(context)) {
+//                            Log.e("DEBUG","db deleted song: " + s.mTitle);
+//                        }
+//                        for (Song s: AudioController.currentSongQueue) {
+//                            Log.e("DEBUG","song queue delete song: " + s.mTitle);
+//                        }
+                        return true;
                     default:
                         return false;
                 }
             }
         });
         popupMenu.show();
+    }
+
+    private void addToPlaylist(final Song song) {
+        AlertDialog.Builder pickPlaylistBuilder = new AlertDialog.Builder(getContext());
+        final ArrayList<Playlist> playlists = PlaylistData.getAllPlaylist(context);
+        ArrayList<String> existentPlaylistNames = new ArrayList<>();
+        existentPlaylistNames.add("Create new playlist");
+        for (Playlist playlist: playlists) {
+            existentPlaylistNames.add(playlist.mName);
+        }
+        CharSequence[] playlistNames = existentPlaylistNames.toArray(new CharSequence[existentPlaylistNames.size()]);
+        pickPlaylistBuilder.setTitle(R.string.choose_a_playlist)
+                .setItems(playlistNames, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int which) {
+                        if (which == 0) { // Create new playlist
+                            newPlaylist(context, song);
+                        } else {
+                            // Add song to playlist
+                            Long playlistID = Long.parseLong(playlists.get(which - 1).mID);
+                            long audioID = Long.parseLong(song.mAudioID);
+                            PlaylistData.addSongToPlaylist(context, playlistID, audioID);
+                            notifyDataSetChanged();
+                            // TODO: add song to currently playing song queue if queue is being played
+                        }
+                    }
+                })
+                .setNegativeButton(R.string.dialog_negative_button, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // Pressed cancel
+                    }
+                });
+        pickPlaylistBuilder.create().show();
+    }
+
+    private void deleteSongFromDatabase(Song song) {
+        Toast.makeText(context, song.mTitle + " deleted", Toast.LENGTH_SHORT).show();
+        SongData.deleteSongFromDatabase(context, song);
+        remove(song);
+        notifyDataSetChanged();
+        AudioController.updateCurrentSongQueue(context);
+    }
+
+    private void deleteSongFromPlaylist(Song song, Playlist playlist) {
+        Toast.makeText(context, song.mTitle + " deleted from " + playlist.mName, Toast.LENGTH_SHORT).show();
+        SongData.deleteSongFromPlaylist(context, song, playlist);
+        remove(song);
+        notifyDataSetChanged();
+        AudioController.updateCurrentSongQueue(context, mPlaylist.mID);
     }
 
     /**
@@ -184,37 +302,6 @@ public class SongListAdapter extends ArrayAdapter<Song> {
         builder.create().show();
     }
 
-
-//    private void updateSongListBottomBadView(final Song curSong) {
-//        AudioController.playOrPauseInBottomBar(curSong.mPath);
-//
-//        // Show the currently playing song
-//        (MainActivity.currentSongLayout).setVisibility(View.VISIBLE);
-//
-//        ImageView artwork = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artwork);
-//        TextView title = (MainActivity.currentSongLayout).findViewById(R.id.song_list_title);
-//        TextView artist = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artist);
-//        final Button songOnBottomBarPlayPauseButton = (MainActivity.currentSongLayout).findViewById(
-//                R.id.current_song_play_pause);
-//
-//        artwork.setImageBitmap(curSong.mArtwork);
-//        title.setText(curSong.mTitle);
-//        artist.setText(curSong.mArtist);
-//
-//        AudioController.setSongPlayPause(getContext(), songOnBottomBarPlayPauseButton);
-//        songOnBottomBarPlayPauseButton.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                AudioController.playOrPauseInBottomBar(curSong.mPath);
-//                AudioController.setSongPlayPause(getContext(), songOnBottomBarPlayPauseButton);
-//            }
-//        });
-//    }
-
-    public static void onSongItemActivityBackPress(Song curSong) {
-
-    }
-
     private void onPersistentCurrentSongClick(View view, Song curSong) {
         Intent songItemIntent = new Intent(view.getContext(), SongItemActivity.class);
         songItemIntent.putExtra("SONG_PATH", curSong.mPath);
@@ -222,9 +309,5 @@ public class SongListAdapter extends ArrayAdapter<Song> {
         songItemIntent.putExtra("SONG_ARTIST", curSong.mArtist);
         songItemIntent.putExtra("SONG_DURATION", curSong.mDuration);
         view.getContext().startActivity(songItemIntent);
-    }
-
-    public static void songOnBottomBarDataChange() {
-
     }
 }

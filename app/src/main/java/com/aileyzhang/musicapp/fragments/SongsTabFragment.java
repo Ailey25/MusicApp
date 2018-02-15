@@ -9,8 +9,8 @@ import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.aileyzhang.musicapp.R;
-import com.aileyzhang.musicapp.data.SongData;
 import com.aileyzhang.musicapp.adapters.SongListAdapter;
+import com.aileyzhang.musicapp.data.SongData;
 
 
 /**
@@ -38,7 +38,12 @@ public class SongsTabFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_songs_tab, container, false);
         ListView songListView = view.findViewById(R.id.songs_list_view);
-        songListView.setAdapter(new SongListAdapter(getContext(), 0, SongData.getAllSongs(getContext())));
+
+        SongListAdapter songListAdapter = new SongListAdapter(getContext(), 0,
+                SongData.getAllSongs(getContext()));
+        songListAdapter.setParentTabFragment("Songs");
+        songListView.setAdapter(songListAdapter);
+
         return view;
     }
 }

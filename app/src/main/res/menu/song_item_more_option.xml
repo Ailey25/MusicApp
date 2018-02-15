@@ -2,11 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-    android:id="@+id/add_to_playlist"
-    android:title="@string/add_to_playlist" />
+        android:id="@+id/add_to_playlist"
+        android:title="@string/add_to_playlist"
+        android:visible="false"/>
+
+    <item
+        android:id="@+id/delete_from_playlist"
+        android:title="@string/delete_from_playlist"
+        android:visible="false"/>
 
     <item
         android:id="@+id/delete_song"
-        android:title="@string/delete_song" />
+        android:title="@string/delete_song"
+        android:visible="false"/>
 
 </menu>

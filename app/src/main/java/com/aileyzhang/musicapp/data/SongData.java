@@ -7,6 +7,7 @@ import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.util.Log;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -60,11 +61,12 @@ public class SongData {
         }
     }
 
-    public static ArrayList<Song> getSongsInAlbum (Context context, String albumName) {
+    public static ArrayList<Song> getSongsInAlbum (Context context, Album album) {
         ArrayList<Song> songs = new ArrayList<>();
 
-        String selection = MediaStore.Audio.AudioColumns.ALBUM + "=?";
-        String[] selectionArgs = new String[] {albumName};
+        String selection = MediaStore.Audio.AudioColumns.ALBUM + "=? AND " +
+                            MediaStore.Audio.AudioColumns.ARTIST + "=?";
+        String[] selectionArgs = new String[] {album.mAlbumTitle, album.mArtist};
 
         Cursor songCursor = context.getContentResolver().query(MEDIA_URI, songProjection,
                 selection, selectionArgs, null);
@@ -76,7 +78,7 @@ public class SongData {
                     String id = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media._ID));
                     String title = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
                     String artist = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
-                    String album = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
+                    String albumName = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.ALBUM));
                     String duration = songCursor.getString(songCursor.getColumnIndex(MediaStore.Audio.Media.DURATION));
 
                     MediaMetadataRetriever mediaMetadataRetriever = new MediaMetadataRetriever();
@@ -88,7 +90,7 @@ public class SongData {
                     mediaMetadataRetriever.release();
                     Bitmap art = BitmapFactory.decodeStream(inputStream);
 
-                    Song song = new Song(path, id, title, artist, album, art, duration);
+                    Song song = new Song(path, id, title, artist, albumName, art, duration);
                     songs.add(song);
                 }
             }
@@ -176,9 +178,16 @@ public class SongData {
         }
     }
 
-    public static void deleteSong(Context context, Song song) {
+    public static void deleteSongFromDatabase(Context context, Song song) {
         Uri uri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-        String selection = MediaStore.Audio.AudioColumns._ID + "=?";
+        String selection = MediaStore.MediaColumns.DATA + "='" + song.mPath + "'";
+        context.getContentResolver().delete(uri, selection, null);
+    }
+
+    public static void deleteSongFromPlaylist(Context context, Song song, Playlist playlist) {
+        long playlistID = Long.parseLong(playlist.mID);
+        Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistID);
+        String selection = MediaStore.Audio.Playlists.Members._ID + "=?";
         String[] selectionArgs = {song.mAudioID};
         context.getContentResolver().delete(uri, selection, selectionArgs);
     }

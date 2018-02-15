@@ -1,37 +1,26 @@
 package com.aileyzhang.musicapp.activities;
 
 import android.Manifest;
-import android.app.Activity;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.TextView;
 
 import com.aileyzhang.musicapp.AudioController;
 import com.aileyzhang.musicapp.CustomSwipeViewPager;
 import com.aileyzhang.musicapp.R;
 import com.aileyzhang.musicapp.adapters.MainActivityContentAdapter;
-import com.aileyzhang.musicapp.data.Song;
+import com.aileyzhang.musicapp.data.Playlist;
+import com.aileyzhang.musicapp.fragments.PlaylistsTabFragment;
 
 import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.ALBUMS_PAGE_POSITION;
 import static com.aileyzhang.musicapp.adapters.MainActivityContentAdapter.ARTISTS_PAGE_POSITION;
@@ -50,8 +39,6 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        // Check for permission and request it if it's not there
-        getStoragePermission();
 
         setContentView(R.layout.activity_main);
         Toolbar toolbar = findViewById(R.id.toolbar);
@@ -67,23 +54,32 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         navigationView.setCheckedItem(R.id.nav_songs);
 
-        // Initialize Current song layout
+        // Initialize Current song layout and button on bottom bar
         currentSongLayout = findViewById(R.id.current_song_layout);
+        AudioController.songOnBottomBarPlayPauseButton =
+                (MainActivity.currentSongLayout).findViewById(R.id.current_song_play_pause);
 
         // Initialize ViewPager
         mMainViewPager = findViewById(R.id.main_view_pager);
+        mMainViewPager.setOffscreenPageLimit(3);
         mMainActivityContentAdapter = new MainActivityContentAdapter(getSupportFragmentManager());
-        mMainViewPager.setAdapter(mMainActivityContentAdapter);
-        mMainViewPager.setCurrentItem(SONGS_PAGE_POSITION);
+
+        // Check for permission and request it if it's not there
+        if (getStoragePermission()) {
+            mMainViewPager.setAdapter(mMainActivityContentAdapter);
+            mMainViewPager.setCurrentItem(SONGS_PAGE_POSITION);
+        }
     }
 
-    public void getStoragePermission() {
+    public Boolean getStoragePermission() {
         Boolean hasPermission = ContextCompat.checkSelfPermission(this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
         if (!hasPermission) {
-            ActivityCompat.requestPermissions(this, new String[]{
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE}, SDCARD_PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(this,
+                    new String[]{ Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    SDCARD_PERMISSION_REQUEST_CODE);
         }
+        return hasPermission;
     }
 
     @Override
@@ -92,6 +88,8 @@ public class MainActivity extends AppCompatActivity
             case SDCARD_PERMISSION_REQUEST_CODE:
                 if (grantResult.length > 0 && grantResult[0] == PackageManager.PERMISSION_GRANTED) {
                     // Permission granted
+                    mMainViewPager.setAdapter(mMainActivityContentAdapter);
+                    mMainViewPager.setCurrentItem(SONGS_PAGE_POSITION);
                 } else {
                     // Permission denied
                 }
@@ -143,6 +141,12 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_albums) {
             mMainViewPager.setCurrentItem(ALBUMS_PAGE_POSITION);
         } else if (id == R.id.nav_playlists) {
+            PlaylistsTabFragment playlistsTabFragment = mMainActivityContentAdapter.playlistsTabFragment;
+            playlistsTabFragment.updatePlaylistList();
+            if (playlistsTabFragment.playlistSongListAdapter != null) {
+                Playlist playlist = playlistsTabFragment.playlistSongListAdapter.getPlaylist();
+                playlistsTabFragment.updateSongsInPlaylist(playlist);
+            }
             mMainViewPager.setCurrentItem(PLAYLISTS_PAGE_POSITION);
         } else if (id == R.id.nav_settings) {
 
@@ -161,32 +165,9 @@ public class MainActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (AudioController.currentSong != null) updateSongListBottomBadView(AudioController.currentSong);
-    }
-
-    public void updateSongListBottomBadView(final Song curSong) {
-        AudioController.playOrPauseInBottomBar(curSong.mPath);
-
-        // Show the currently playing song
-        (MainActivity.currentSongLayout).setVisibility(View.VISIBLE);
-
-        ImageView artwork = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artwork);
-        TextView title = (MainActivity.currentSongLayout).findViewById(R.id.song_list_title);
-        TextView artist = (MainActivity.currentSongLayout).findViewById(R.id.song_list_artist);
-        final Button songOnBottomBarPlayPauseButton = (MainActivity.currentSongLayout).findViewById(
-                R.id.current_song_play_pause);
-
-        artwork.setImageBitmap(curSong.mArtwork);
-        title.setText(curSong.mTitle);
-        artist.setText(curSong.mArtist);
-
-        AudioController.setSongPlayPause(this, songOnBottomBarPlayPauseButton);
-        songOnBottomBarPlayPauseButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                AudioController.playOrPauseInBottomBar(curSong.mPath);
-                AudioController.setSongPlayPause(getApplicationContext(), songOnBottomBarPlayPauseButton);
-            }
-        });
+        if (AudioController.currentSong != null) {
+            AudioController.setSongPlayPause(this, AudioController.songOnBottomBarPlayPauseButton);
+            AudioController.updateSongListBottomBarView(AudioController.currentSong);
+        }
     }
 }

@@ -26,6 +26,8 @@
     <string name="delete_from_playlist">Delete from playlist</string>
     <string name="delete_song">Delete song</string>
 
+    <string name="delete_playlist">Delete playlist</string>
+
     <string name="choose_a_playlist">Choose a playlist</string>
     <string name="dialog_positive_button">OK</string>
     <string name="dialog_negative_button">Cancel</string>

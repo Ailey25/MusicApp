@@ -191,6 +191,7 @@ public class SongListAdapter extends ArrayAdapter<Song> {
 //                            Log.e("DEBUG","playlist before" + s.mTitle);
 //                        }
                         deleteSongFromPlaylist(song, mPlaylist);
+                        Toast.makeText(context, song.mTitle + " deleted from " + mPlaylist.mName, Toast.LENGTH_SHORT).show();
 //                        for (Song s: SongData.getSongsInPlaylist(context, mPlaylist.mID)) {
 //                            Log.e("DEBUG","playlist after" + s.mTitle);
 //                        }
@@ -200,6 +201,7 @@ public class SongListAdapter extends ArrayAdapter<Song> {
                         return true;
                     case R.id.delete_song:
                         deleteSongFromDatabase(song);
+                        Toast.makeText(context, song.mTitle + " deleted", Toast.LENGTH_SHORT).show();
 //                        for (Song s: SongData.getAllSongs(context)) {
 //                            Log.e("DEBUG","db deleted song: " + s.mTitle);
 //                        }
@@ -215,6 +217,11 @@ public class SongListAdapter extends ArrayAdapter<Song> {
         popupMenu.show();
     }
 
+    /**
+     * Add song to playlist, new or existing
+     * Toast: [song name] added to [playlist name]
+     * @param song
+     */
     private void addToPlaylist(final Song song) {
         AlertDialog.Builder pickPlaylistBuilder = new AlertDialog.Builder(getContext());
         final ArrayList<Playlist> playlists = PlaylistData.getAllPlaylist(context);
@@ -236,6 +243,7 @@ public class SongListAdapter extends ArrayAdapter<Song> {
                             long audioID = Long.parseLong(song.mAudioID);
                             PlaylistData.addSongToPlaylist(context, playlistID, audioID);
                             notifyDataSetChanged();
+                            Toast.makeText(context, song.mTitle + " added to " + playlists.get(which - 1).mName, Toast.LENGTH_SHORT).show();
                             // TODO: add song to currently playing song queue if queue is being played
                         }
                     }
@@ -250,7 +258,6 @@ public class SongListAdapter extends ArrayAdapter<Song> {
     }
 
     private void deleteSongFromDatabase(Song song) {
-        Toast.makeText(context, song.mTitle + " deleted", Toast.LENGTH_SHORT).show();
         SongData.deleteSongFromDatabase(context, song);
         remove(song);
         notifyDataSetChanged();
@@ -258,7 +265,6 @@ public class SongListAdapter extends ArrayAdapter<Song> {
     }
 
     private void deleteSongFromPlaylist(Song song, Playlist playlist) {
-        Toast.makeText(context, song.mTitle + " deleted from " + playlist.mName, Toast.LENGTH_SHORT).show();
         SongData.deleteSongFromPlaylist(context, song, playlist);
         remove(song);
         notifyDataSetChanged();
@@ -268,6 +274,7 @@ public class SongListAdapter extends ArrayAdapter<Song> {
     /**
      * AlertDialog for user to input new playlist name.
      * Checks whether playlist already exists. Creates new playlist if name is not taken.
+     * Toast: [song name] added to [playlist name]
      * @param context
      */
     private void newPlaylist(final Context context, final Song song) {
@@ -290,6 +297,7 @@ public class SongListAdapter extends ArrayAdapter<Song> {
                             newPlaylistID = PlaylistData.createNewPlaylist(getContext(), userPickedPlaylistName);
                             long audioID = Long.parseLong(song.mAudioID);
                             PlaylistData.addSongToPlaylist(context, newPlaylistID, audioID);
+                            Toast.makeText(context, song.mTitle + " added to " + userPickedPlaylistName, Toast.LENGTH_SHORT).show();
                         }
                     }
                 })

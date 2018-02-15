@@ -99,4 +99,14 @@ public class PlaylistData {
         Uri uri = MediaStore.Audio.Playlists.Members.getContentUri("external", playlistID);
         context.getContentResolver().insert(uri, values);
     }
+
+    /**
+     * Delete playlist from database
+     */
+    public static void deletePlaylist(Context context, String playlistID) {
+        Uri uri = MediaStore.Audio.Playlists.EXTERNAL_CONTENT_URI;
+        String selection = MediaStore.Audio.Playlists._ID + "=?";
+        String[] selectionArgs = {playlistID};
+        context.getContentResolver().delete(uri, selection, selectionArgs);
+    }
 }

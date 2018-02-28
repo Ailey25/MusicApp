@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit;
 
 public class AudioController {
     public static MediaPlayer mediaPlayer = new MediaPlayer();
+    public static String MAIN_PLAYLIST = "MAIN_PLAYLIST";
     public static Song currentSong;
     public static ArrayList<Song> currentSongQueue = new ArrayList<>();
     public static Button songOnBottomBarPlayPauseButton;
@@ -77,7 +78,8 @@ public class AudioController {
     /**
      * Plays next song. If currently playing last song, create new shuffled queue and start playing.
      */
-    public static void onPlayNextClick(Context context) {
+    public static void onPlayNextClick(Context context, String playlistID) {
+//        Log.e("QUEUE", "Playlist is " + playlistID);
 //        Log.e("QUEUE", "Current queue. Prev song: " + currentSong.mTitle);
 //        for (Song s: currentSongQueue) {
 //            Log.e("QUEUE", s.mTitle);
@@ -105,7 +107,11 @@ public class AudioController {
             }
         } else {
             currentSongQueue.clear();
-            currentSongQueue = SongData.getAllSongs(context);
+            if (playlistID.equals(MAIN_PLAYLIST)) {
+                currentSongQueue = SongData.getAllSongs(context);
+            } else {
+                currentSongQueue = SongData.getSongsInPlaylist(context, playlistID);
+            }
             Collections.shuffle(currentSongQueue);
             if (mediaPlayer.isPlaying()) {
                 try {

@@ -21,6 +21,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 
 public class SongItemActivity extends AppCompatActivity implements Runnable {
+    private String mPlaylistID;
     private String mPath;
     private String mTitle;
     private String mArtist;
@@ -40,6 +41,7 @@ public class SongItemActivity extends AppCompatActivity implements Runnable {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         Intent intent = getIntent();
+        mPlaylistID = intent.getStringExtra("SONG_PLAYLISTID");
         mPath = intent.getStringExtra("SONG_PATH");
         mTitle = intent.getStringExtra("SONG_TITLE");
         mArtist = intent.getStringExtra("SONG_ARTIST");
@@ -125,7 +127,7 @@ public class SongItemActivity extends AppCompatActivity implements Runnable {
         songItemNextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AudioController.onPlayNextClick(getBaseContext());
+                AudioController.onPlayNextClick(getBaseContext(), mPlaylistID);
                 updateView();
             }
         });

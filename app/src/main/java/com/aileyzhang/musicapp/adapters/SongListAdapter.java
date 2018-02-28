@@ -126,7 +126,11 @@ public class SongListAdapter extends ArrayAdapter<Song> {
         bottomBarPlayNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AudioController.onPlayNextClick(getContext());
+                if (mPlaylist == null) {
+                    AudioController.onPlayNextClick(getContext(), AudioController.MAIN_PLAYLIST);
+                } else {
+                    AudioController.onPlayNextClick(getContext(), mPlaylist.mID);
+                }
                 AudioController.updateSongListBottomBarView(AudioController.currentSong);
             }
         });
@@ -312,6 +316,11 @@ public class SongListAdapter extends ArrayAdapter<Song> {
 
     private void onPersistentCurrentSongClick(View view, Song curSong) {
         Intent songItemIntent = new Intent(view.getContext(), SongItemActivity.class);
+        if (mPlaylist == null) {
+            songItemIntent.putExtra("SONG_PLAYLISTID", AudioController.MAIN_PLAYLIST);
+        } else {
+            songItemIntent.putExtra("SONG_PLAYLISTID", mPlaylist.mID);
+        }
         songItemIntent.putExtra("SONG_PATH", curSong.mPath);
         songItemIntent.putExtra("SONG_TITLE", curSong.mTitle);
         songItemIntent.putExtra("SONG_ARTIST", curSong.mArtist);
